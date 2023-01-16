@@ -1,0 +1,1 @@
+document.getElementById('testSpan').innerHTML = "Test";
