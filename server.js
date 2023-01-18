@@ -3,14 +3,12 @@ import dotenv from 'dotenv'
 import morgan from 'morgan'
 
 import createApiRoutes from './routes/apiRoutes.js'
-import createAppRoutes from './routes/appRoutes.js'
 
 dotenv.config();
 
 const app = express();
 app.use(morgan('tiny'));
 
-createAppRoutes(app);
 createApiRoutes(app);
 
 // Get port from .env and start server
