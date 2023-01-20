@@ -13,7 +13,7 @@ router.get('/test', authMiddleware.check, (req, res) => {
 });
 
 export default function(app) {
-    app.use(`/api/v${process.env.API_VERSION}`, router);
-    app.use('/api', apiNotFound);
-    app.use('/api', apiErrorHandler);
+    app.use(`/v${process.env.API_VERSION}`, router);
+    app.use(apiNotFound);
+    app.use(apiErrorHandler);
 };
