@@ -5,7 +5,6 @@ const testUser = {
 
 function getByUsernamePassword(username, password)
 {
-    console.log(username, password);
     if (testUser.username == username && testUser.password == password)
     {
         return {

@@ -1,25 +1,17 @@
 import userRepo from '../repository/user.js';
+import jwt from 'jsonwebtoken'
 
 function login(req, res)
 {
-    if (!req.headers.authorization) return res.status(400).json({msg: "No login information provided."});
-    
-    let header = req.headers.authorization.split(' ');
-    // Basic auth
-    if (header[0] == 'Basic')
-    {
-        let basic = Buffer.from(header[1], 'base64').toString('utf8');
-        let auth = basic.split(':');
+    if (!req.body.username || !req.body.password) return res.status(400).json({message: "No login information provided."});
 
-        let user = userRepo.getByUsernamePassword(auth[0], auth[1]);
-        if (!user) return res.status(401).json({msg: "Wrong creadentials."});
+    let user = userRepo.getByUsernamePassword(req.body.username, req.body.password);
+    if (!user) return res.status(401).json({message: "Wrong creadentials."});
 
-        // Session
-        req.session.user = user;
-        return res.status(200).json(user);
-    }
+    const token = jwt.sign({ user: user }, process.env.JWT_KEY, {expiresIn: process.env.JWT_EXPIRE});
+    res.cookie('token', token, { httpOnly: true, sameSite: true });
 
-    res.status(400).json({msg: "No supported authentification."});
+    return res.status(200).json(user);
 }
 
 function logout(req, res, next)
@@ -27,7 +19,7 @@ function logout(req, res, next)
     if (req.session.user)
     {
         req.session.destroy();
-        res.status(200).json({msg: "Logout successfully."});
+        res.status(200).json({message: "Logout successfully."});
     }
 }
 

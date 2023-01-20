@@ -9,7 +9,7 @@ router.post('/auth/login', authController.login);
 router.post('/auth/login', authController.logout);
 
 router.get('/test', authMiddleware.check, (req, res) => {
-    res.status(200).json({msg: "Some API data."});
+    res.status(200).json({message: "Some API data."});
 });
 
 export default function(app) {

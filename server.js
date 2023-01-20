@@ -1,25 +1,29 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
-import sessions from 'express-session'
 
+import config from './config.js'
 import createApiRoutes from './routes/apiRoutes.js'
 
 dotenv.config();
+global.config = config;
 
 const app = express();
 app.use(morgan('tiny'));
 app.use(express.json());
-
-app.use(sessions({
-    secret: process.env.SESSION_SECRET,  
-    resave: false,
-    saveUninitialized: false,
-    cookie: { 
-      secure: false, // for HTTPS only
-      maxAge: Number(process.env.SESSION_TIME)
-    } 
-  }));
+// Manage cookies
+app.use((req, res, next) => {
+    const { headers: { cookie } } = req;
+    if (cookie) {
+        const values = cookie.split(';').reduce((res, item) => {
+            const data = item.trim().split('=');
+            return { ...res, [data[0]]: data[1] };
+        }, {});
+        res.locals.cookie = values;
+    }
+    else res.locals.cookie = {};
+    next();
+});
 
 createApiRoutes(app);
 

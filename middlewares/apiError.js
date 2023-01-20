@@ -5,10 +5,8 @@ function apiNotFound (req, res, next) {
 }
 
 function apiErrorHandler (err, req, res, next) {
-    const statusCode = res.statusCode === 200 ? 500 : res.statusCode
-    res.status(statusCode)
-    res.json({
-        message: err.message,
+    res.status(500).json({
+        message: "An error occured.",
         stack: process.env.NODE_ENV === 'production' ? null : err.stack,
     })
 }
