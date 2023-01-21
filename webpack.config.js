@@ -1,12 +1,13 @@
 import path from 'node:path'
 import { fileURLToPath } from 'url'
 import MiniCssExtractPlugin  from 'mini-css-extract-plugin'
+import {VueLoaderPlugin} from 'vue-loader'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
   mode: "development",
-  entry: './src/index.js',
+  entry: './src/main.js',
   output: {
     filename: 'scripts.js',
     path: path.resolve(__dirname, 'public'),
@@ -16,13 +17,18 @@ export default {
       {
         test: /\.scss$/,
         use: [  { loader: MiniCssExtractPlugin.loader }, "css-loader", "sass-loader"]
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
       }
     ]
   },
   plugins: [
     new MiniCssExtractPlugin({
         filename: "styles.css",
-    })
+    }),
+    new VueLoaderPlugin()
   ],
   devServer: {
     static: {
