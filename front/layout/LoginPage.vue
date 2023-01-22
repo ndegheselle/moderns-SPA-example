@@ -1,24 +1,38 @@
 <template>
-<div class="login-container">
-  <div class="Box">
+  <div class="login-container color-bg-subtle">
+    <div class="Box">
       <div class="Box-header">
         <h3 class="Box-title">Login</h3>
       </div>
       <div class="Box-body">
         <div class="form-group">
-          <label class="form-label" for="input-username">Username</label>
-          <input class="form-input" type="text" id="input-username">
+          <div class="form-group-header">
+            <label for="username-input">Username</label>
+          </div>
+          <div class="form-group-body">
+            <input class="form-control" type="text" />
+          </div>
         </div>
         <div class="form-group">
-          <label class="form-label" for="input-password">Password</label>
-          <input class="form-input" type="password" id="input-password">
+          <div class="form-group-header">
+            <label for="username-input">Password</label>
+          </div>
+          <div class="form-group-body">
+            <input class="form-control" type="password" />
+          </div>
         </div>
-        <label class="form-checkbox">
-          <input type="checkbox" disabled><i class="form-icon"></i> Remember me
-        </label>
-      </div>
+          <div class="form-checkbox">
+    <label  disabled >
+      <input type="checkbox"/>
+      Remember me
+    </label>
   </div>
-</div>
+      </div>
+      <div class="Box-footer text-right">
+        <button class="btn btn-primary" type="button">login</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -35,7 +49,6 @@
 
 <script>
 export default {
-  components: {
-  },
+  components: {},
 };
 </script>
