@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
   mode: "development",
-  entry: './src/main.js',
+  entry: './front/main.js',
   output: {
     filename: 'scripts.js',
     path: path.resolve(__dirname, 'public'),
@@ -15,7 +15,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(css|sass|scss)$/,
         use: [  { loader: MiniCssExtractPlugin.loader }, "css-loader", "sass-loader"]
       },
       {
