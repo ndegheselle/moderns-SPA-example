@@ -16,7 +16,12 @@ export default {
     rules: [
       {
         test: /\.(css|sass|scss)$/,
-        use: [  { loader: MiniCssExtractPlugin.loader }, "css-loader", "sass-loader"]
+        use: [  { loader: MiniCssExtractPlugin.loader }, { 
+          loader: 'css-loader',
+          options: {
+            url: false
+          }
+        }, "sass-loader"]
       },
       {
         test: /\.vue$/,

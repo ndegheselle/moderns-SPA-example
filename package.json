@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "back-prod":  "node server.js",
-    "back":       "nodemon server.js",
+    "back-prod": "node server.js",
+    "back": "nodemon server.js",
     "front-prod": "webpack --config webpack.prod.js",
-    "front":      "webpack serve --open --config webpack.dev.js"
+    "front": "webpack serve --open --config webpack.dev.js"
   },
   "repository": {
     "type": "git",
