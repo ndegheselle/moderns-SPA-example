@@ -21,12 +21,12 @@
             <input class="form-control" type="password" />
           </div>
         </div>
-          <div class="form-checkbox">
-    <label  disabled >
-      <input type="checkbox"/>
-      Remember me
-    </label>
-  </div>
+        <div class="form-checkbox">
+          <label disabled>
+            <input type="checkbox" />
+            Remember me
+          </label>
+        </div>
       </div>
       <div class="Box-footer text-right">
         <button class="btn btn-primary" type="button">login</button>

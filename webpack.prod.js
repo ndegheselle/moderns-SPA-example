@@ -4,7 +4,6 @@ import common from'./webpack.common.js'
 import glob from 'glob-all'
 import { PurgeCSSPlugin }  from 'purgecss-webpack-plugin'
 
-
 export default merge(common, {
     mode: 'production',
     plugins: [
