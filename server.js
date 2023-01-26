@@ -6,7 +6,8 @@ import config from './config.js'
 import createApiRoutes from './routes/apiRoutes.js'
 
 dotenv.config();
-global.config = config;
+
+config.init();
 
 const app = express();
 app.use(morgan('tiny'));
