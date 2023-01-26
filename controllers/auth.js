@@ -11,7 +11,6 @@ async function login(req, res)
     const token = jwt.sign({ user: user }, process.env.JWT_KEY, {expiresIn: process.env.JWT_EXPIRE});
     res.cookie('token', token, { httpOnly: true, sameSite: true });
 
-    console.log(user);
     return res.status(200).json(user);
 }
 

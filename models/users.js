@@ -23,11 +23,13 @@ const usersSchema = new Schema({
 export const usersModel = mongoose.model('users', usersSchema);
 export const usersRepository = {
     getByUsernamePassword: async function(username, password) {
-        const user = await userModel.findOne({ username }).select('+password').exec();
+        const user = await usersModel.findOne({ username }).select('+password').exec();
         if (!user) return null;
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (isMatch) return user;
+        if (isMatch) {
+            return await usersModel.findById(user._id);
+        };
         return null;
     }
 };
