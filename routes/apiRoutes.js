@@ -6,7 +6,7 @@ import authMiddleware from '../middlewares/auth.js'
 const router = express.Router();
 
 router.post('/auth/login', authController.login);
-router.post('/auth/login', authController.logout);
+router.post('/auth/logout', authController.logout);
 
 router.get('/test', authMiddleware.check, (req, res) => {
     res.status(200).json({message: "Some API data."});

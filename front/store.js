@@ -11,4 +11,4 @@ export default createStore({
         state.user = user;
       }
     }
-  })
+});
