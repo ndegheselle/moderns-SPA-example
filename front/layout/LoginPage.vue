@@ -5,21 +5,24 @@
         <h3 class="Box-title">Login</h3>
       </div>
       <div class="Box-body">
-        <div class="form-group">
+        <div class="form-group" :class="{errored: errorMessage}">
           <div class="form-group-header">
             <label for="username-input">Username</label>
           </div>
           <div class="form-group-body">
-            <input class="form-control" type="text" v-model="username"/>
+            <input class="form-control" type="text" v-model="user.username"/>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" :class="{errored: errorMessage}">
           <div class="form-group-header">
             <label for="username-input">Password</label>
           </div>
           <div class="form-group-body">
-            <input class="form-control" type="password" v-model="password"/>
+            <input class="form-control" type="password" v-model="user.password"/>
           </div>
+        </div>
+        <div class="flash flash-error" v-if="errorMessage">
+          <span class="octicon"><i class="gg-danger"></i></span> {{errorMessage}}
         </div>
         <div class="form-checkbox">
           <label disabled>
@@ -54,15 +57,21 @@ export default {
   components: {},
   data: function() {
     return {
-      username: "",
-      password: ""
+      errorMessage: "",
+      user: {
+        username: "",
+        password: ""
+      }
     }
   },
   methods: {
     connect: function() {
-      authService.login(this.username, this.password).then((user) => {
+      this.errorMessage = "";
+      authService.login(this.user.username, this.user.password)
+      .then((user) => {
         this.$store.commit('connect', user);
-        console.log(this.$store.state.user);
+      }).catch((error) => {
+        this.errorMessage = error.message;
       });
     }
   }

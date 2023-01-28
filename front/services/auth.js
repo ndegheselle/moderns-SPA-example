@@ -8,7 +8,6 @@ function login(username, password)
         return response.data;
     }).catch(function (error) {
         throw new Error(error.response.data.message);
-        // TODO : create alert
     });
 }
 
