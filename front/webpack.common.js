@@ -6,7 +6,7 @@ import {VueLoaderPlugin} from 'vue-loader'
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
-  entry: './front/main.js',
+  entry: './src/main.js',
   output: {
     filename: 'scripts.js',
     path: path.resolve(__dirname, 'public'),

@@ -5,10 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "back": "node server.js",
-    "back-dev": "nodemon server.js",
-    "front-build": "webpack --config webpack.prod.js",
-    "front-start": "webpack serve --open --config webpack.dev.js"
+    "start": "node server.js",
+    "watch": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -21,8 +19,6 @@
   },
   "homepage": "https://github.com/ndegheselle/lightcloud#readme",
   "dependencies": {
-    "@primer/css": "^20.8.0",
-    "axios": "^1.2.6",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -30,21 +26,9 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
-    "morgan": "^1.10.0",
-    "vue": "^3.2.45",
-    "vuex": "^4.1.0"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "css-loader": "^6.7.3",
-    "glob-all": "^3.3.1",
-    "mini-css-extract-plugin": "^2.7.2",
-    "nodemon": "^2.0.20",
-    "purgecss-webpack-plugin": "^5.0.0",
-    "sass": "^1.57.1",
-    "sass-loader": "^13.2.0",
-    "vue-loader": "^17.0.1",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1"
+    "nodemon": "^2.0.20"
   }
 }
