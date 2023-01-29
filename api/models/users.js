@@ -18,7 +18,8 @@ const usersSchema = new Schema({
         select: false
     },
     refreshTokenId: {
-        type: mongoose.Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId,
+        select: false
     }
 });
 

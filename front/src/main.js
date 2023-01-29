@@ -6,9 +6,16 @@ import router from './routes.js'
 import store from './store.js'
 import App from './App.vue'
 
+import authService from './services/auth.js'
+
 const app = createApp(App);
 
-app.use(store);
-app.use(router);
+authService.refresh()
+.then((user) => {
+    store.commit('connect', user);
+}).finally(() => {
+    app.use(store);
+    app.use(router);
 
-app.mount('#app');
+    app.mount('#app');
+});

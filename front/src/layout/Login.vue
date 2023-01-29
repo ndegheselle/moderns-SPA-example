@@ -71,6 +71,7 @@ export default {
       authService.login(this.user.username, this.user.password, this.rememberMe)
       .then((user) => {
         this.$store.commit('connect', user);
+        this.$router.push('/');
       }).catch((error) => {
         this.errorMessage = error.message;
       });

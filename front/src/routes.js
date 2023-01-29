@@ -16,9 +16,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (!store.getters.isConnected && !to.matched.some(record => record.meta.noAuth)) {
-    next({ name: 'Login' })
+    next({ name: 'Login' });
   } else {
-    next() // go to wherever I'm going
+    next(); // go to wherever I'm going
   }
 })
 

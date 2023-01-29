@@ -34,7 +34,7 @@ async function checkRefreshToken(token)
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_KEY);
-        const user = await usersModel.findById(decoded.user._id);
+        const user = await usersModel.findById(decoded.user._id).select('+refreshTokenId');
 
         // Token have already been user once
         if (user.refreshTokenId != decoded.tokenId) {
