@@ -7,7 +7,7 @@ function createTokenCookie(res, user) {
 }
 
 function createRefreshCookie(res, user) {
-    const refreshToken = jwt.sign({ user }, process.env.JWT_REFRESH_KEY, { expiresIn: process.env.JWT_REFRESH_TOKEN });
+    const refreshToken = jwt.sign({ user }, process.env.JWT_REFRESH_KEY, { expiresIn: process.env.JWT_REFRESH_EXPIRE });
     res.cookie('refresh-token', refreshToken, { httpOnly: true, sameSite: true });
 }
 

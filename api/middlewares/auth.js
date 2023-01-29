@@ -13,7 +13,7 @@ function check(req, res, next)
 
 function refresh(req, res)
 {
-  const user = authService.checkToken(req.cookies.refreshToken, process.env.JWT_REFRESH_KEY);
+  const user = authService.checkToken(req.cookies["refresh-token"], process.env.JWT_REFRESH_KEY);
   if (!user) return null;
 
   // If valid re create all token
