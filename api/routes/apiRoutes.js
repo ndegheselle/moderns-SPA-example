@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.post('/auth/login', authController.login);
 router.post('/auth/logout', authController.logout);
+router.put('/auth/refresh', authMiddleware.check, authController.refresh);
 
 router.get('/test', authMiddleware.check, (req, res) => {
     res.status(200).json({message: "Some API data."});
