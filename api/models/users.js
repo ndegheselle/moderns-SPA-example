@@ -16,6 +16,9 @@ const usersSchema = new Schema({
         type: String,
         required: true,
         select: false
+    },
+    refreshTokenId: {
+        type: mongoose.Schema.Types.ObjectId
     }
 });
 
@@ -31,5 +34,10 @@ export const usersRepository = {
             return await usersModel.findById(user._id);
         };
         return null;
+    },
+    saveRefreshTokenId: async function(userId, tokenId) {
+        const user = await usersModel.findById(userId);
+        user.refreshTokenId = tokenId;
+        user.save();
     }
 };

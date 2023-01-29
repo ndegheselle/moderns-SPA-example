@@ -12,7 +12,8 @@ async function login(req, res) {
     // Auth token
     authService.createTokenCookie(res, user);
     // Refresh token
-    authService.createRefreshCookie(res, user);
+    if (req.body.rememberMe === true)
+        authService.createRefreshCookie(res, user);
 
     return res.status(200).json(user);
 }

@@ -1,9 +1,9 @@
 import http from "./http.js"
 
-function login(username, password)
+function login(username, password, rememberMe)
 {
     return http.post('/auth/login', {
-        username, password
+        username, password, rememberMe
     }).then(function (response) {
         return response.data;
     }).catch(function (error) {
@@ -14,10 +14,8 @@ function login(username, password)
 function logout()
 {
     return http.post('/auth/logout', {})
-    .then(function (response) {
-    }).catch(function (error) {
+    .catch(function (error) {
         throw new Error(error.response.data.message);
-        // TODO : create alert
     });
 }
 

@@ -8,12 +8,15 @@ export default createStore({
     },
     getters: {
       isConnected (state) {
-        return false;
+        return !!state.user;
       }
     },
     mutations: {
       connect (state, user) {
         state.user = user;
+      },
+      disconnect(state) {
+        state.user = null;
       }
     }
 });

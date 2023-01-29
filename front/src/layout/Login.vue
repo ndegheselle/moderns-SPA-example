@@ -26,7 +26,7 @@
         </div>
         <div class="form-checkbox">
           <label disabled>
-            <input type="checkbox" />
+            <input type="checkbox" v-model="rememberMe"/>
             Remember me
           </label>
         </div>
@@ -58,6 +58,7 @@ export default {
   data: function() {
     return {
       errorMessage: "",
+      rememberMe: true,
       user: {
         username: "",
         password: ""
@@ -67,7 +68,7 @@ export default {
   methods: {
     connect: function() {
       this.errorMessage = "";
-      authService.login(this.user.username, this.user.password)
+      authService.login(this.user.username, this.user.password, this.rememberMe)
       .then((user) => {
         this.$store.commit('connect', user);
       }).catch((error) => {
