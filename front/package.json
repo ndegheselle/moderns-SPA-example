@@ -22,6 +22,7 @@
     "@primer/css": "^20.8.0",
     "axios": "^1.2.6",
     "vue": "^3.2.45",
+    "vue-router": "^4.1.6",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
