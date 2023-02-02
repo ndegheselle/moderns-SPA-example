@@ -10,7 +10,7 @@ datasource db {
   url      = env("MONGO_URI")
 }
 
-model Post {
+model users {
   id                String @id @default(auto()) @map("_id") @db.ObjectId
   username          String
   password          String

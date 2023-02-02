@@ -1,18 +1,21 @@
 import bcrypt from 'bcrypt';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const usersRepository = {
     getByUsernamePassword: async function(username, password) {
-        const user = await this.$prisma.findOne({ username }).select('+password').exec();
+        const user = await prisma.users.findFirst({ where: {username}});
         if (!user) return null;
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (isMatch) {
-            return await this.$prisma.findById(user._id);
+            return await prisma.users.findUnique({where: {id: user.id}});
         };
         return null;
     },
     saveRefreshTokenId: async function(userId, tokenId) {
-        const user = await this.$prisma.findById(userId);
+        const user = await prisma.findById(userId);
         user.refreshTokenId = tokenId;
         user.save();
     }

@@ -1,7 +1,7 @@
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
+For auth : [there](https://github.com/sidebase/nuxt-auth-example).
 ## Setup
 
 Make sure to install the dependencies:
@@ -15,6 +15,11 @@ npm install
 
 # pnpm
 pnpm install
+```
+
+Generate prisma client:
+```
+npx prisma generate
 ```
 
 ## Development Server

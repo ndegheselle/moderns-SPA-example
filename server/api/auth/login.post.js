@@ -1,21 +1,19 @@
 import jwt from 'jsonwebtoken'
-import mongoose from 'mongoose';
-
-import { usersRepository } from '../../models/users.js';
+import { ObjectId } from 'bson';
+import { usersRepository } from '../../repositories/users.js';
 
 export function createTokenCookie(event, user) {
-    const token = jwt.sign({ user: {_id: user._id} }, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXPIRE });
-    
-    setCookie(event, 'token', token, httpOnly=true);
+    const token = jwt.sign({ user: {id: user.id} }, process.env.JWT_KEY, { expiresIn: process.env.JWT_EXPIRE });
+    setCookie(event, 'token', token, {httpOnly: true});
 }
 
 export function createRefreshCookie(event, user) {
-    const tokenId = new mongoose.Types.ObjectId();
+    const tokenId = ObjectId();
 
-    usersRepository.saveRefreshTokenId(user._id, tokenId);
+    usersRepository.saveRefreshTokenId(user.id, tokenId);
 
     const refreshToken = jwt.sign({ user, tokenId }, process.env.JWT_REFRESH_KEY, { expiresIn: process.env.JWT_REFRESH_EXPIRE });
-    res.cookie('refresh-token', refreshToken, { httpOnly: true, sameSite: true });
+    setCookie(event, 'refresh-token', refreshToken, {httpOnly: true });
 }
 
 export default defineEventHandler(async (event) => {
