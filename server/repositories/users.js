@@ -13,10 +13,5 @@ export const usersRepository = {
             return await prisma.users.findUnique({where: {id: user.id}});
         };
         return null;
-    },
-    saveRefreshTokenId: async function(userId, tokenId) {
-        const user = await prisma.findById(userId);
-        user.refreshTokenId = tokenId;
-        user.save();
     }
 };

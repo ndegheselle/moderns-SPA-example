@@ -5,17 +5,12 @@ export default defineNuxtConfig({
     ],
     modules: [
         '@pinia/nuxt',
+        '@sidebase/nuxt-auth'
     ],
     plugins: [
         {src: '~/plugins/prisma.js', mode: 'server'}
     ],
     privateRuntimeConfig: {
-        jwt: {
-            access_expire: process.env.JWT_EXPIRE,
-            access_secret: process.env.JWT_KEY,
-            refresh_expire: process.env.JWT_REFRESH_EXPIRE,
-            refresh_secret: process.env.JWT_REFRESH_KEY,
-        },
         db: process.env.MONGO_URI
     }
 })
