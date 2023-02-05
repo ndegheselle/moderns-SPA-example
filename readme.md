@@ -1,48 +1,8 @@
-# Nuxt 3 Minimal Starter
+Tech stack :
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-For auth : [there](https://github.com/sidebase/nuxt-auth-example).
+Proxy from frontend to backend.
 
-## Setup
-
-Make sure to install the dependencies:
-
-```bash
-# yarn
-yarn install
-
-# npm
-npm install
-
-# pnpm
-pnpm install
-```
-
-Generate prisma client:
-```
-npx prisma generate
-```
-
-## Development Server
-
-Start the development server on http://localhost:3000
-
-```bash
-npm run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- frontend : SvelteKit
+    - Style : pico.css
+- backend : Fastify
+    - ORM : Prisma
