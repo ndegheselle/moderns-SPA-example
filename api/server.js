@@ -1,23 +1,24 @@
-import Fastify from 'fastify'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+
+import fastify from 'fastify'
+import cookie from '@fastify/cookie';
+import autoLoad from '@fastify/autoload'
+
 import * as dotenv from 'dotenv'
+
 dotenv.config();
 
-const fastify = Fastify({
-  logger: true
-});
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
-// Declare a route
-fastify.get('/api/test', async (request, reply) => {
-  return { hello: 'world' };
+const app = fastify({
+  logger: true
 })
 
-// Run the server!
-const start = async () => {
-  try {
-    await fastify.listen({ port: process.env.PORT });
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-}
-start();
+app.register(cookie);
+app.register(autoLoad, {
+  dir: join(__dirname, 'plugins')
+})
+
+app.listen({ port: process.env.PORT })

@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/autoload": "^5.7.1",
+    "@fastify/cookie": "^8.3.0",
     "dotenv": "^16.0.3",
     "fastify": "^4.12.0"
   },
