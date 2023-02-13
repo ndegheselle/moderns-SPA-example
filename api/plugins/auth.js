@@ -24,19 +24,22 @@ function logout(req, reply)
     return reply.status(200).send({ msg: "Logout successfully." });
 }
 
-function refresh(req, reply)
+async function refresh(req, reply)
 {
     const refreshToken = req.cookies["refresh-token"];
     if (!refreshToken) return reply.status(400).send({ message: "No refresh token provided." });
 
+    console.log("Cookie", refreshToken);
     const user = decodeRefreshToken(refreshToken);
     if (!user) return reply.status(400).send({ message: "Invalid refresh token." });
 
     // Tokens
     reply.setCookie('access-token', createAccessToken(user), {httpOnly: true});
-    reply.setCookie('refresh-token', createRefreshToken(user), {httpOnly: true, path: "/auth/refresh"});
+    reply.setCookie('refresh-token', await createRefreshToken(user), {httpOnly: true, path: "/auth/refresh"});
 
-    return reply.status(200).send({ user });
+    return reply.status(200).send({ 
+        user: await usersRepository.getById(user.id) 
+    });
 }
 
 export const autoPrefix = '/auth';

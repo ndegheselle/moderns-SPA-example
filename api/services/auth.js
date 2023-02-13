@@ -27,6 +27,6 @@ export function decodeRefreshToken(token)
     const decoded = jwt.verify(token, process.env.JWT_REFRESH_KEY);
 
     // If refresh token blacklisted
-    if (!decoded || !usersRepository.checkRefreshToken(decoded)) return null;
+    if (!decoded || !usersRepository.checkRefreshToken(token, decoded)) return null;
     return decoded.user;
 }
