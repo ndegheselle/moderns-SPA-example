@@ -18,7 +18,9 @@ const app = fastify({
 
 app.register(cookie);
 app.register(autoLoad, {
-  dir: join(__dirname, 'plugins')
+  dir: join(__dirname, 'plugins'),
+  autoHooks: true,
+  cascadeHooks: true,
 })
 
 app.listen({ port: process.env.PORT })

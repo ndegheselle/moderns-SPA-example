@@ -16,7 +16,12 @@ export async function createRefreshToken(user)
 
 export function decodeAccessToken(token)
 {
-    const decoded = jwt.verify(token, process.env.JWT_KEY);
+    let decoded;
+    try {
+        decoded = jwt.verify(token, process.env.JWT_KEY);
+    }
+    catch(e)
+    { return null; }
 
     if (!decoded) return null;
     return decoded.user;
@@ -24,8 +29,13 @@ export function decodeAccessToken(token)
 
 export function decodeRefreshToken(token)
 {
-    const decoded = jwt.verify(token, process.env.JWT_REFRESH_KEY);
-
+    let decoded;
+    try {
+        decoded = jwt.verify(token, process.env.JWT_REFRESH_KEY);
+    }
+    catch(e)
+    { return null; }
+    
     // If refresh token blacklisted
     if (!decoded || !usersRepository.checkRefreshToken(token, decoded)) return null;
     return decoded.user;

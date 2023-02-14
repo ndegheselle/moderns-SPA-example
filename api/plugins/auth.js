@@ -9,17 +9,21 @@ async function login(req, reply)
     if (!user) return reply.status(400).send({ message: "Wrong creadentials." });
 
     // Tokens
-    reply.setCookie('access-token', createAccessToken(user), {httpOnly: true});
+    const token = createAccessToken(user);
+    console.log("token", token);
+    reply.setCookie('access-token', token, {httpOnly: true, sameSite: "lax", path: "/"});
     if (req.body.rememberMe === true)
-        reply.setCookie('refresh-token', await createRefreshToken(user), {httpOnly: true, path: "/auth/refresh"});
+        reply.setCookie('refresh-token', await createRefreshToken(user), {httpOnly: true, sameSite: "lax", path: "/auth/refresh"});
     
     return reply.status(200).send({ user });
 }
 
 function logout(req, reply)
 {
-    reply.clearCookie('access-token');
-    reply.clearCookie('refresh-token');
+    if (!req.currentUser) return reply.status(401).send({ msg: "Not logged in." });
+
+    reply.clearCookie('access-token', {httpOnly: true, sameSite: "lax", path: "/"});
+    reply.clearCookie('refresh-token', {httpOnly: true, sameSite: "lax", path: "/auth/refresh"});
 
     return reply.status(200).send({ msg: "Logout successfully." });
 }
@@ -29,7 +33,6 @@ async function refresh(req, reply)
     const refreshToken = req.cookies["refresh-token"];
     if (!refreshToken) return reply.status(400).send({ message: "No refresh token provided." });
 
-    console.log("Cookie", refreshToken);
     const user = decodeRefreshToken(refreshToken);
     if (!user) return reply.status(400).send({ message: "Invalid refresh token." });
 
@@ -43,8 +46,8 @@ async function refresh(req, reply)
 }
 
 export const autoPrefix = '/auth';
-export default async function (fastify, opts) {
-    fastify.post("/login", login);
-    fastify.post("/logout", logout);
-    fastify.post("/refresh", refresh);
+export default async function (app, opts) {
+    app.post("/login", login);
+    app.post("/logout", logout);
+    app.post("/refresh", refresh);
 };
