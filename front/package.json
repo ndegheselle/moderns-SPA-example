@@ -1,20 +1,24 @@
 {
   "name": "lightcloud",
-"version": "0.0.1",
-"private": true,
-"scripts": {
-  "dev": "vite dev",
-  "build": "vite build",
-  "preview": "vite preview",
-  "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-  "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
-},
-"devDependencies": {
-  "@sveltejs/adapter-node": "^1.1.6",
-  "@sveltejs/kit": "^1.0.0",
-  "svelte": "^3.54.0",
-  "svelte-check": "^3.0.1",
-  "vite": "^4.0.0"
-},
-"type": "module"
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "^1.1.6",
+    "@sveltejs/kit": "^1.0.0",
+    "svelte": "^3.54.0",
+    "svelte-check": "^3.0.1",
+    "vite": "^4.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "bulma": "^0.9.4",
+    "sass": "^1.58.1"
+  }
 }

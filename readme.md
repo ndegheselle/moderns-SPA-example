@@ -3,7 +3,7 @@
 Proxy from frontend to backend.
 
 - frontend : SvelteKit
-    - Style : pico.css
+    - Style : Bulma
 - backend : Fastify
     - ORM : Prisma
 
