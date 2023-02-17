@@ -1,26 +1,17 @@
 <script>
-    import { PUBLIC_API_URL } from "$env/static/public";
+    import { login } from "../../services/auth.js";
 
     let haveError = false;
 
     let username = "";
     let password = "";
+    let rememberMe = true;
 
-    function login() {
-        fetch(`${PUBLIC_API_URL}/auth/login`, {
-            method: "post",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password }),
-        })
-            .then(async function (response) {
-                if (!response.ok) throw new Error(response.status);
-
-                const user = await response.json();
-                console.log(user);
-            })
-            .catch(function (error) {
-                haveError = true;
-            });
+    function onLogin() {
+        haveError = false;
+        login(username, password, rememberMe).catch(() => {
+            haveError = true;
+        });
     }
 </script>
 
@@ -58,9 +49,16 @@
                         </div>
                     </label>
                 </div>
-
+                <div class="field">
+                    <div class="control">
+                      <label class="checkbox">
+                        <input type="checkbox" bind:checked={rememberMe}>
+                        Remember me
+                      </label>
+                    </div>
+                  </div>
                 <div class="control">
-                    <button class="button is-primary" on:click={login}
+                    <button class="button is-primary" on:click={onLogin}
                         >Login</button
                     >
                 </div>
