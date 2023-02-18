@@ -17,7 +17,11 @@ const app = fastify({
   logger: true
 })
 
-app.register(cors, {origin: process.env.ACCEPTED_DOMAIN});
+app.register(cors, {
+  origin: process.env.ACCEPTED_DOMAIN,
+  methods: ['GET', 'PUT', 'POST'],
+  credentials: true
+});
 app.register(cookie);
 app.register(autoLoad, {
   dir: join(__dirname, 'plugins'),

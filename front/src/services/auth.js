@@ -1,11 +1,10 @@
-import { PUBLIC_API_URL } from "$env/static/public";
+import { fetchApi } from "./api.js";
 
-export function login(username, password, rememberMe)
+export function login(username, password)
 {
-    return fetch(`${PUBLIC_API_URL}/auth/login`, {
+    return fetchApi(`/auth/login`, {
         method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, rememberMe }),
+        body: JSON.stringify({ username, password }),
     })
         .then(async function (response) {
             if (!response.ok) throw new Error(response.status);
@@ -17,7 +16,7 @@ export function login(username, password, rememberMe)
 
 export function refresh()
 {
-    return fetch(`${PUBLIC_API_URL}/auth/refresh`, {
+    return fetchApi(`/auth/refresh`, {
         method: "post"
     })
         .then(async function (response) {

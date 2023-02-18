@@ -1,15 +1,20 @@
 <script>
     import { login } from "../../services/auth.js";
+    import { goto } from '$app/navigation';
+    import { currentUser } from '../../store.js';
 
     let haveError = false;
 
     let username = "";
     let password = "";
-    let rememberMe = true;
 
     function onLogin() {
         haveError = false;
-        login(username, password, rememberMe).catch(() => {
+        login(username, password)
+        .then((user) => {
+            currentUser.set(user);
+            goto("/");
+        }).catch(() => {
             haveError = true;
         });
     }
@@ -45,18 +50,15 @@
                                 type="password"
                                 bind:value={password}
                             />
-                            <p class="help is-danger" class:is-hidden={!haveError}>Invalid username or password.</p>
+                            <p
+                                class="help is-danger"
+                                class:is-hidden={!haveError}
+                            >
+                                Invalid username or password.
+                            </p>
                         </div>
                     </label>
                 </div>
-                <div class="field">
-                    <div class="control">
-                      <label class="checkbox">
-                        <input type="checkbox" bind:checked={rememberMe}>
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
                 <div class="control">
                     <button class="button is-primary" on:click={onLogin}
                         >Login</button

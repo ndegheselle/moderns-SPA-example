@@ -9,11 +9,8 @@ async function login(req, reply)
     if (!user) return reply.status(400).send({ message: "Wrong creadentials." });
 
     // Tokens
-    const token = createAccessToken(user);
-    console.log("token", token);
-    reply.setCookie('access-token', token, {httpOnly: true, sameSite: "lax", path: "/"});
-    if (req.body.rememberMe === true)
-        reply.setCookie('refresh-token', await createRefreshToken(user), {httpOnly: true, sameSite: "lax", path: "/auth/refresh"});
+    reply.setCookie('access-token', createAccessToken(user), {httpOnly: true, sameSite: "none", path: "/"});
+    reply.setCookie('refresh-token', await createRefreshToken(user), {httpOnly: true, sameSite: "none", path: "/auth/refresh"});
     
     return reply.status(200).send({ user });
 }
@@ -22,8 +19,8 @@ function logout(req, reply)
 {
     if (!req.currentUser) return reply.status(401).send({ msg: "Not logged in." });
 
-    reply.clearCookie('access-token', {httpOnly: true, sameSite: "lax", path: "/"});
-    reply.clearCookie('refresh-token', {httpOnly: true, sameSite: "lax", path: "/auth/refresh"});
+    reply.clearCookie('access-token', {httpOnly: true, sameSite: "none", path: "/"});
+    reply.clearCookie('refresh-token', {httpOnly: true, sameSite: "none", path: "/auth/refresh"});
 
     return reply.status(200).send({ msg: "Logout successfully." });
 }
