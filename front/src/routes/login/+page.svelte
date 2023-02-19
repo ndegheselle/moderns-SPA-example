@@ -8,7 +8,7 @@
     let username = "";
     let password = "";
 
-    function onLogin() {
+    function sendLogin() {
         haveError = false;
         login(username, password)
         .then((user) => {
@@ -60,7 +60,7 @@
                     </label>
                 </div>
                 <div class="control">
-                    <button class="button is-primary" on:click={onLogin}
+                    <button class="button is-primary" on:click={sendLogin}
                         >Login</button
                     >
                 </div>

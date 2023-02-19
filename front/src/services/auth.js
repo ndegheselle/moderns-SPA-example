@@ -26,3 +26,13 @@ export function refresh()
             return user;
         });
 }
+
+export function logout()
+{
+    return fetchApi(`/auth/logout`, {
+        method: "post"
+    })
+        .then(async function (response) {
+            if (!response.ok) throw new Error(response.status);
+        });
+}

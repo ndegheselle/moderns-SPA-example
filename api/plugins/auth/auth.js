@@ -1,5 +1,9 @@
-import { usersRepository } from "../models/users.js";
-import { createAccessToken, createRefreshToken, decodeRefreshToken } from "../services/auth.js";
+import ms from "ms";
+import { usersRepository } from "../../models/users.js";
+import { createAccessToken, createRefreshToken, decodeRefreshToken } from "../../services/auth.js";
+
+const cookieAccessOptions = {httpOnly: true, sameSite: "Lax", path: "/", maxAge: ms(process.env.JWT_EXPIRE)};
+const cookieRefreshOptions = {httpOnly: true, sameSite: "Lax", path: "/auth/refresh", maxAge: ms(process.env.JWT_REFRESH_EXPIRE)};
 
 async function login(req, reply)
 {
@@ -9,8 +13,8 @@ async function login(req, reply)
     if (!user) return reply.status(400).send({ message: "Wrong creadentials." });
 
     // Tokens
-    reply.setCookie('access-token', createAccessToken(user), {httpOnly: true, sameSite: "none", path: "/"});
-    reply.setCookie('refresh-token', await createRefreshToken(user), {httpOnly: true, sameSite: "none", path: "/auth/refresh"});
+    reply.setCookie('access-token', createAccessToken(user), cookieAccessOptions);
+    reply.setCookie('refresh-token', await createRefreshToken(user), cookieRefreshOptions);
     
     return reply.status(200).send({ user });
 }
@@ -19,8 +23,8 @@ function logout(req, reply)
 {
     if (!req.currentUser) return reply.status(401).send({ msg: "Not logged in." });
 
-    reply.clearCookie('access-token', {httpOnly: true, sameSite: "none", path: "/"});
-    reply.clearCookie('refresh-token', {httpOnly: true, sameSite: "none", path: "/auth/refresh"});
+    reply.clearCookie('access-token', cookieAccessOptions);
+    reply.clearCookie('refresh-token', cookieRefreshOptions);
 
     return reply.status(200).send({ msg: "Logout successfully." });
 }
@@ -34,16 +38,15 @@ async function refresh(req, reply)
     if (!user) return reply.status(400).send({ message: "Invalid refresh token." });
 
     // Tokens
-    reply.setCookie('access-token', createAccessToken(user), {httpOnly: true});
-    reply.setCookie('refresh-token', await createRefreshToken(user), {httpOnly: true, path: "/auth/refresh"});
+    reply.setCookie('access-token', createAccessToken(user), cookieAccessOptions);
+    reply.setCookie('refresh-token', await createRefreshToken(user), cookieRefreshOptions);
 
     return reply.status(200).send({ 
         user: await usersRepository.getById(user.id) 
     });
 }
 
-export const autoPrefix = '/auth';
-export default async function (app, opts) {
+export default async function(app, opts) {
     app.post("/login", login);
     app.post("/logout", logout);
     app.post("/refresh", refresh);

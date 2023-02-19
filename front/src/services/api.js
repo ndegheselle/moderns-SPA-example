@@ -7,7 +7,7 @@ export function fetchApi(url, options = {}) {
     };
   
     const fetchOptions = Object.assign({}, defaults, options);
-    const fullUrl = `${PUBLIC_API_URL}${url}`;
+    const fullUrl = `/api${url}`;
 
     return fetch(fullUrl, fetchOptions);
 }

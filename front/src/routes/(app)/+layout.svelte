@@ -1,62 +1,38 @@
 <script>
-  import { goto } from '$app/navigation';
-  import { IsConnected } from "../../store.js";
-  import { onMount } from "svelte";
+  import { goto } from "$app/navigation";
+  import {logout} from "../../services/auth.js";
 
-  onMount(async () => {
-    if (!IsConnected()) return goto("/login");
-  });
+  let menuOpen = false;
+
+  async function sendLogout()
+  {
+    await logout();
+    goto("/login");
+  }
 </script>
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="https://bulma.io">
-      <img
-        src="https://bulma.io/images/bulma-logo.png"
-        width="112"
-        height="28"
-      />
-    </a>
-
-    <a
-      role="button"
+    <a class="navbar-item" href="/"> LIGHTCLOUD </a>
+    <button
       class="navbar-burger"
+      class:is-active={menuOpen}
       aria-label="menu"
       aria-expanded="false"
-      data-target="navbarBasicExample"
+      data-target="mainNavbar"
+      on:click={() => menuOpen = !menuOpen}
     >
       <span aria-hidden="true" />
       <span aria-hidden="true" />
       <span aria-hidden="true" />
-    </a>
+    </button>
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item"> Home </a>
-
-      <a class="navbar-item"> Documentation </a>
-
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link"> More </a>
-
-        <div class="navbar-dropdown">
-          <a class="navbar-item"> About </a>
-          <a class="navbar-item"> Jobs </a>
-          <a class="navbar-item"> Contact </a>
-          <hr class="navbar-divider" />
-          <a class="navbar-item"> Report an issue </a>
-        </div>
-      </div>
-    </div>
-
+  <div id="mainNavbar" class="navbar-menu" class:is-active={menuOpen}>
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-primary">
-            <strong>Sign up</strong>
-          </a>
-          <a class="button is-light"> Log in </a>
+          <button class="button is-primary" on:click={sendLogout}>Logout</button>
         </div>
       </div>
     </div>

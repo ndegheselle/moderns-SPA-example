@@ -17,16 +17,22 @@ const app = fastify({
   logger: true
 })
 
-app.register(cors, {
+/*app.register(cors, {
   origin: process.env.ACCEPTED_DOMAIN,
   methods: ['GET', 'PUT', 'POST'],
   credentials: true
-});
+});*/
 app.register(cookie);
+
 app.register(autoLoad, {
   dir: join(__dirname, 'plugins'),
   autoHooks: true,
   cascadeHooks: true,
+  dirNameRoutePrefix: function rewrite (folderParent, folderName) {
+    if (folderName === '(app)') folderName = '';
+    return folderName;
+  },
+  options: { prefix: 'api' }
 })
 
 app.listen({ port: process.env.PORT })
