@@ -17,11 +17,11 @@ const app = fastify({
   logger: true
 })
 
-/*app.register(cors, {
+app.register(cors, {
   origin: process.env.ACCEPTED_DOMAIN,
   methods: ['GET', 'PUT', 'POST'],
   credentials: true
-});*/
+});
 app.register(cookie);
 
 app.register(autoLoad, {
@@ -32,7 +32,7 @@ app.register(autoLoad, {
     if (folderName === '(app)') folderName = '';
     return folderName;
   },
-  options: { prefix: 'api' }
+  // options: { prefix: 'api' }
 })
 
 app.listen({ port: process.env.PORT })

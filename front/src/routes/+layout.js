@@ -2,16 +2,17 @@ import { refresh } from "../services/auth.js";
 import { currentUser, IsConnected } from '../store.js';
 import { redirect } from '@sveltejs/kit';
 
+// TODO : not clear when this is called
 export const load = async ({ route }) => {
-  if (route.id == "/login") return;
+  console.log("layout:load");
+  if (IsConnected() || route.id == "/login") return;
 
   try {
     const user = await refresh();
     currentUser.set(user);
   } catch (error) {
-    throw redirect(302, '/login');
   }
-  
+
   if (!IsConnected()) throw redirect(302, '/login');
 };
 
