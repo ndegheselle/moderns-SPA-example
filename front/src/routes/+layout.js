@@ -1,10 +1,9 @@
-import { refresh } from "../services/auth.js";
+import { refresh } from "../lib/auth.js";
 import { currentUser, IsConnected } from '../store.js';
 import { redirect } from '@sveltejs/kit';
 
-// TODO : not clear when this is called
+// Check for each page is still connected
 export const load = async ({ route }) => {
-  console.log("layout:load");
   if (IsConnected() || route.id == "/login") return;
 
   try {

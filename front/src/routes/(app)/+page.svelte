@@ -1,5 +1,5 @@
 <script>
-    import {getTestData} from "../../services/test.js";
+    import {getTestData} from "../../lib/test.js";
 
     let data = "";
 

@@ -1,5 +1,5 @@
 <script>
-    import { login } from "../../services/auth.js";
+    import { login } from "../../lib/auth.js";
     import { goto } from '$app/navigation';
     import { currentUser } from '../../store.js';
 
