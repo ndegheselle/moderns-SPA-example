@@ -13,7 +13,7 @@
 
 <nav class="navbar" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="/"> LIGHTCLOUD </a>
+    <a class="navbar-item" href="/">LIGHTCLOUD</a>
     <button
       class="navbar-burger"
       class:is-active={menuOpen}
@@ -29,6 +29,9 @@
   </div>
 
   <div id="mainNavbar" class="navbar-menu" class:is-active={menuOpen}>
+    <div class="navbar-start">
+      <a class="navbar-item" href="/accountancy">Accountancy</a>
+    </div>
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
@@ -39,6 +42,6 @@
   </div>
 </nav>
 
-<main class="container">
+<main>
   <slot />
 </main>
