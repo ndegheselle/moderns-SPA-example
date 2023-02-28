@@ -2,7 +2,7 @@ import { PUBLIC_API_URL } from '$env/static/public'
 
 import { refresh } from "./auth.js";
 import { goto } from "$app/navigation";
-import { currentUser } from "../store.js"
+import { currentUser } from "../stores/main.js"
 
 export class ApiError extends Error {
   constructor(status, message) {

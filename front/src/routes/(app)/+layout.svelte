@@ -1,6 +1,6 @@
 <script>
   import { goto } from "$app/navigation";
-  import {logout} from "../../lib/auth.js";
+  import {logout} from "@lib/api/auth.js";
 
   let menuOpen = false;
 

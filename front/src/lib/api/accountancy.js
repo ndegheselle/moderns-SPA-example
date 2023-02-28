@@ -1,5 +1,18 @@
 import { fetchApi } from "./api.js";
 
+function getTransactionsTypes() {
+    const typesId = new Set();
+    const types = [];
+    for (const transaction of data.account.transactions)
+    {
+        if (!typesId.has(transaction.typeId)) {
+            typesId.add(transaction.typeId);
+            types.push(data.types[transaction.typeId]);
+        }
+    }
+    return types;
+}
+
 export function getAllTypes() {
     return Promise.resolve({
         "9df3c179-15d3-4fc2-8d2e-5c01f7c71959": {
