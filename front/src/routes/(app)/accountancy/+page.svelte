@@ -7,16 +7,14 @@
 
 <div class="container">
 
-    <div class="is-flex">
-        <button class="ml-auto button" data-modal="ModalImport">Button</button>
+    <div class="is-flex px-2">
+        <button class="ml-auto button is-small" data-modal="ModalImport">Import</button>
     </div>
 
     <div class="accountancy-layout columns is-gapless">
         <div class="column transaction-list panel">
             <p class="panel-heading">Transactions</p>
-            <div class="panel-block">
 
-            </div>
             {#each data.account.transactions as transaction}
                 <div class="panel-block columns is-gapless">
                     <div class="column">

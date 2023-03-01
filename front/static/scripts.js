@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return; 
         }
 
-        element = e.target.closest('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button');
+        element = e.target.closest('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button[data-dismiss="modal"]');
         if (element)
         {
             const $target = element.closest('.modal');
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => {
         const e = event || window.event;
 
-        if (e.code === 27) { // Escape key
+        if (e.code === 'Escape') { // Escape key
             closeAllModals();
         }
     });

@@ -1,14 +1,25 @@
 <script>
   import { goto } from "$app/navigation";
-  import {logout} from "@lib/api/auth.js";
+  import { onMount } from "svelte";
+  import { logout } from "@lib/api/auth.js";
 
   let menuOpen = false;
 
-  async function sendLogout()
-  {
+  async function sendLogout() {
     await logout();
     goto("/login");
   }
+
+  onMount(async () => {
+    // Close menu on link click
+    document
+      .querySelectorAll("#mainNavbar a.navbar-item")
+      .forEach(function (link) {
+        link.addEventListener("click", function () {
+          menuOpen = false;
+        });
+      });
+  });
 </script>
 
 <nav class="navbar" aria-label="main navigation">
@@ -20,7 +31,7 @@
       aria-label="menu"
       aria-expanded="false"
       data-target="mainNavbar"
-      on:click={() => menuOpen = !menuOpen}
+      on:click={() => (menuOpen = !menuOpen)}
     >
       <span aria-hidden="true" />
       <span aria-hidden="true" />
@@ -35,7 +46,8 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <button class="button is-primary" on:click={sendLogout}>Logout</button>
+          <button class="button is-primary" on:click={sendLogout}>Logout</button
+          >
         </div>
       </div>
     </div>
