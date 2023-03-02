@@ -15,8 +15,15 @@ export class ApiError extends Error {
 export function fetchApi(url, options = {}) {
   const defaults = {
     credentials: 'include',
-    headers: (options.body) ? { 'Content-Type': 'application/json' } : undefined
+    headers: {}
   };
+
+  // JSON everything but FormData
+  if (options.body && !(options.body instanceof FormData))
+  {
+    defaults.headers['Content-Type'] = 'application/json';
+    options.body = JSON.stringify(options.body);
+  }
 
   const fetchOptions = Object.assign({}, defaults, options);
   const fullUrl = `${PUBLIC_API_URL}${url}`;

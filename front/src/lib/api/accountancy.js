@@ -66,3 +66,14 @@ export function getAccount(id) {
         ]
     });
 }
+
+export function importFile(file, options)
+{
+    let data = new FormData();
+    data.append('file', file);
+
+    return fetchApi("/accountancy/accounts/import", {
+        method: "post",
+        body: data
+    });
+}
