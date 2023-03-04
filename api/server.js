@@ -1,10 +1,11 @@
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 
-import fastify from 'fastify'
-import cors from '@fastify/cors'
+import fastify from 'fastify';
+import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
-import autoLoad from '@fastify/autoload'
+import multipart from '@fastify/multipart';
+import autoLoad from '@fastify/autoload';
 
 import * as dotenv from 'dotenv'
 
@@ -23,6 +24,7 @@ app.register(cors, {
   credentials: true
 });
 app.register(cookie);
+app.register(multipart);
 
 app.register(autoLoad, {
   dir: join(__dirname, 'plugins'),

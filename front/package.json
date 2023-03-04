@@ -16,6 +16,11 @@
     "vite": "^4.0.0"
   },
   "type": "module",
+  "imports": {
+    "#root/*": {
+      "default": "./src/*"
+    }
+  },
   "dependencies": {
     "@sveltejs/adapter-static": "^2.0.1",
     "bulma": "^0.9.4",

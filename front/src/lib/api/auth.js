@@ -4,7 +4,7 @@ export function login(username, password)
 {
     return fetchApi(`/auth/login`, {
         method: "post",
-        body: JSON.stringify({ username, password }),
+        body: { username, password },
         ignoreRefresh: true
     })
         .then(async function (response) {

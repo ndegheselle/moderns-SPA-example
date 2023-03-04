@@ -1,7 +1,7 @@
 <script>
-    import { login } from "../../lib/auth.js";
+    import { login } from "@lib/api/auth.js";
     import { goto } from '$app/navigation';
-    import { currentUser } from '../../store.js';
+    import { currentUser } from '@lib/stores/main.js';
 
     let haveError = false;
 

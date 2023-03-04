@@ -1,4 +1,4 @@
-import { getAllTypes, getAccount } from "../../../lib/accountancy.js";
+import { getAllTypes, getAccount } from "@lib/api/accountancy.js";
 
 export const load = async () => {
     return {

@@ -1,6 +1,7 @@
-import { refresh } from "../lib/auth.js";
-import { currentUser, IsConnected } from '../store.js';
 import { redirect } from '@sveltejs/kit';
+import { currentUser, IsConnected } from '@lib/stores/main.js';
+import { refresh } from "@lib/api/auth.js";
+
 
 // Check for each page is still connected
 export const load = async ({ route }) => {
