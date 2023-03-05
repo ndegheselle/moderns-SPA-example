@@ -13,3 +13,7 @@ model users {
   username      String
   refreshToken  String?
 }
+
+model accounts {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+}

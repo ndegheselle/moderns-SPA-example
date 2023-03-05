@@ -1,46 +1,65 @@
 /** Modals **/
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Functions to open and close a modal
-    function openModal($el) {
+    const targets = [
+        {
+            selector: '[data-modal]',
+            callback: function(element) {
+                const modal = element.dataset.modal;
+                const $target = document.getElementById(modal);
+                open($target);
+            }
+        },
+        {
+            selector: '.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button[data-dismiss="modal"]',
+            callback: function(element) {
+                const $target = element.closest('.modal');
+                close($target);
+            }
+        },
+        {
+            selector: '.dropdown-trigger [aria-haspopup="true"]',
+            callback: function(element) {
+                const $target = element.closest('.dropdown');
+                open($target);
+            }
+        }
+    ]
+
+    // Functions to open and close
+    function open($el) {
         $el.classList.add('is-active');
     }
 
-    function closeModal($el) {
+    function close($el) {
         $el.classList.remove('is-active');
     }
 
-    function closeAllModals() {
-        (document.querySelectorAll('.modal') || []).forEach(($modal) => {
-            closeModal($modal);
+    function closeAll(selector) {
+        (document.querySelectorAll(selector) || []).forEach(($modal) => {
+            close($modal);
         });
     }
 
     document.addEventListener("click", function(e){
-        let element = e.target.closest("[data-modal]");
-      
-        if(element){
-            const modal = element.dataset.modal;
-            const $target = document.getElementById(modal);
-            openModal($target);
-            return; 
+        for (const target of targets)
+        {
+            let element = e.target.closest(target.selector);
+            if (element) return target.callback(element);
         }
 
-        element = e.target.closest('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button[data-dismiss="modal"]');
-        if (element)
-        {
-            const $target = element.closest('.modal');
-            closeModal($target);
-            return;
-        }
+        closeAll('.modal');
+        closeAll('.dropdown');
     });
 
     // Add a keyboard event to close all modals
     document.addEventListener('keydown', (event) => {
         const e = event || window.event;
 
-        if (e.code === 'Escape') { // Escape key
-            closeAllModals();
+        // Escape key
+        if (e.code === 'Escape') { 
+            closeAll('.modal');
+            closeAll('.dropdown');
         }
     });
 });
