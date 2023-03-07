@@ -15,18 +15,20 @@ export const alerts = {
     success:    (message) => showAlert(message, "is-success"),
 };
 
-export const dialog = {
-    show(message, title) {
+export const confirm = {
+    show(message, title, type) {
         let result;
 
         confirmModal.update(m => {
+            m.show = true;
             m.message = message;
             m.title = title;
-
+            m.type = type || "is-success";
             result = new Promise(function(resolve, reject) {
                 m.yes = resolve;
                 m.no = reject;
             });
+            return m;
         });
 
         return result;

@@ -32,6 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function close($el) {
+        if (!$el.classList.contains('is-active'))  return;
+
+        $el.dispatchEvent(new Event("closing"));
         $el.classList.remove('is-active');
     }
 
@@ -48,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (element) return target.callback(element);
         }
 
-        closeAll('.modal');
         closeAll('.dropdown');
     });
 

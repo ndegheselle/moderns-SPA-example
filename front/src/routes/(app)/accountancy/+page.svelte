@@ -1,10 +1,19 @@
 <script>
     import Money from "@components/Money.svelte";
-
     import ModalImport from "./ModalImport.svelte";
     import ModalAccounts from "./ModalAccounts.svelte";
 
-    import { alerts } from "@lib/dialogs.js";
+    import { confirm } from "@lib/dialogs.js";
+
+    function testConfirm()
+    {
+        confirm.show("Test", "Title", "is-danger").then(() => {
+            console.log("YAY");
+        })
+        .catch(() => {
+            console.log("nay ...");
+        });
+    }
 
     export let data;
 </script>
@@ -15,7 +24,7 @@
             <select>
             </select>
         </div>
-        <button class="button is-light ml-1" on:click={() => {alerts.error("Test")}}>
+        <button class="button is-light ml-1" on:click={testConfirm}>
             New
         </button>
 

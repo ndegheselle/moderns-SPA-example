@@ -8,8 +8,10 @@ export function IsConnected() {
 export const alert = writable(null);
 
 export const confirmModal = writable({
+    show: false,
     title: "",
     message: "",
+    type: "",
     yes: Function,
     no: Function
 });
