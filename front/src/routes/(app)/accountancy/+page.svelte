@@ -1,7 +1,10 @@
 <script>
     import Money from "@components/Money.svelte";
+
     import ModalImport from "./ModalImport.svelte";
     import ModalAccounts from "./ModalAccounts.svelte";
+
+    import { alerts } from "@lib/dialogs.js";
 
     export let data;
 </script>
@@ -12,25 +15,28 @@
             <select>
             </select>
         </div>
-        <button class="button is-light ml-1" data-modal="ModalAccounts"
-            >Manage</button
-        >
+        <button class="button is-light ml-1" on:click={() => {alerts.error("Test")}}>
+            New
+        </button>
 
-        <div class="ml-auto dropdown is-right">
-            <div class="dropdown-trigger">
-              <button class="button is-rounded is-light" aria-haspopup="true">
-                <i class="gg-more-vertical-alt"></i>
-              </button>
-            </div>
-            <div class="dropdown-menu" role="menu">
-              <div class="dropdown-content">
-                <a href="#" class="dropdown-item">Edit</a>
-                <a href="#" class="dropdown-item has-text-danger">Delete</a>
-                <hr class="dropdown-divider" />
-                <a href="#" class="dropdown-item" data-modal="ModalImport">Import</a>
-              </div>
+        <div class="ml-auto">
+            <div class="dropdown is-right">
+                <div class="dropdown-trigger">
+                  <button class="button is-rounded is-light" aria-haspopup="true">
+                    <i class="gg-more-vertical-alt"></i>
+                  </button>
+                </div>
+                <div class="dropdown-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item" data-modal="ModalImport">Import</a>
+                    <hr class="dropdown-divider" />
+                    <a href="#" class="dropdown-item">Edit account</a>
+                    <a href="#" class="dropdown-item has-text-danger">Delete account</a>
+                  </div>
+                </div>
             </div>
         </div>
+        
     </div>
 
     {#if !data.accounts || !data.accounts.length}
