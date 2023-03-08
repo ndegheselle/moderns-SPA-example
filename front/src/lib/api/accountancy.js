@@ -1,37 +1,8 @@
 import { fetchApi } from "./api.js";
 
-function getTransactionsTypes() {
-    const typesId = new Set();
-    const types = [];
-    for (const transaction of data.account.transactions)
-    {
-        if (!typesId.has(transaction.typeId)) {
-            typesId.add(transaction.typeId);
-            types.push(data.types[transaction.typeId]);
-        }
-    }
-    return types;
-}
-
-export function getAllTypes() {
-    return Promise.resolve({
-        "9df3c179-15d3-4fc2-8d2e-5c01f7c71959": {
-            name: "Test type",
-            balance: 20.0,
-            iconClass: "gg-c-plus-plus",
-            color: "#53D8FB"
-        },
-        "e96a0d34-78c7-4b42-a5ec-7c197fe18e03": {
-            name: "Tax",
-            balance: 30.0,
-            color: "#DCE1E9"
-        },
-        "ef77e64c-2b35-40df-8b2a-ca1cab62f2c1": {
-            name: "Boup",
-            balance: 40.0,
-            color: "#D4AFB9"
-        }
-    });
+export function getAccounts()
+{
+    
 }
 
 export function getAccount(id) {

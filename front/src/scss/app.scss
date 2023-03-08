@@ -1,1 +1,6 @@
-@import "bulma/bulma.sass"
+@import "bulma/bulma.sass";
+
+.is-disable {
+    pointer-events: none;
+    opacity: .5;
+}

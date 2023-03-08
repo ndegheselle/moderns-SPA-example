@@ -5,15 +5,17 @@
 
     import { confirm } from "@lib/dialogs.js";
 
-    function testConfirm()
+    function confirmDelete()
     {
-        confirm.show("Test", "Title", "is-danger").then(() => {
+        confirm.show("Confirm deletion", "Do you really want to delete the account ?", "is-danger").then(() => {
             console.log("YAY");
         })
         .catch(() => {
             console.log("nay ...");
         });
     }
+
+    let currentAccount;
 
     export let data;
 </script>
@@ -24,8 +26,8 @@
             <select>
             </select>
         </div>
-        <button class="button is-light ml-1" on:click={testConfirm}>
-            New
+        <button class="button is-light ml-1">
+            <i class="gg-math-plus"></i>
         </button>
 
         <div class="ml-auto">
@@ -39,8 +41,8 @@
                   <div class="dropdown-content">
                     <a href="#" class="dropdown-item" data-modal="ModalImport">Import</a>
                     <hr class="dropdown-divider" />
-                    <a href="#" class="dropdown-item">Edit account</a>
-                    <a href="#" class="dropdown-item has-text-danger">Delete account</a>
+                    <a href="#" class="dropdown-item" class:is-disable={!currentAccount}>Edit account</a>
+                    <a href="#" class="dropdown-item has-text-danger" class:is-disable={!currentAccount} on:click={confirmDelete}>Delete account</a>
                   </div>
                 </div>
             </div>
