@@ -18,9 +18,9 @@ export function refresh()
         method: "post",
         ignoreRefresh: true
     })
-        .then(async function (response) {
-            return response.decodedBody;
-        });
+    .then(async function (response) {
+        return response.decodedBody;
+    });
 }
 
 export function logout()
