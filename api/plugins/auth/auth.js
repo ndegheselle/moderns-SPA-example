@@ -1,6 +1,6 @@
 import ms from "ms";
-import { usersRepository } from "../../models/users.js";
-import { createAccessToken, createRefreshToken, decodeRefreshToken } from "../../services/auth.js";
+import { usersRepo } from "@models/users.js";
+import { createAccessToken, createRefreshToken, decodeRefreshToken } from "@services/auth.js";
 
 const cookieAccessOptions = {httpOnly: true, sameSite: "Lax", path: "/", maxAge: ms(process.env.JWT_EXPIRE)};
 const cookieRefreshOptions = {httpOnly: true, sameSite: "Lax", path: "/auth/refresh", maxAge: ms(process.env.JWT_REFRESH_EXPIRE)};
@@ -9,7 +9,7 @@ async function login(req, reply)
 {
     if (!req.body.username || !req.body.password) return reply.status(400).send({ message: "No login information provided." });
 
-    let user = await usersRepository.getByUsernamePassword(req.body.username, req.body.password);
+    let user = await usersRepo.getByUsernamePassword(req.body.username, req.body.password);
     if (!user) return reply.status(400).send({ message: "Wrong creadentials." });
 
     // Tokens
@@ -42,7 +42,7 @@ async function refresh(req, reply)
     reply.setCookie('refresh-token', await createRefreshToken(user), cookieRefreshOptions);
 
     return reply.status(200).send({ 
-        user: await usersRepository.getById(user.id) 
+        user: await usersRepo.getById(user.id) 
     });
 }
 
