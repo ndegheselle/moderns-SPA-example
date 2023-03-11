@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { usersRepo } from '@models/users.js';
+import { usersRepo } from '#models/users.js';
 
 export function createAccessToken(user)
 {

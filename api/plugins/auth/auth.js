@@ -1,6 +1,6 @@
 import ms from "ms";
-import { usersRepo } from "@models/users.js";
-import { createAccessToken, createRefreshToken, decodeRefreshToken } from "@services/auth.js";
+import { usersRepo } from "#models/users.js";
+import { createAccessToken, createRefreshToken, decodeRefreshToken } from "#services/auth.js";
 
 const cookieAccessOptions = {httpOnly: true, sameSite: "Lax", path: "/", maxAge: ms(process.env.JWT_EXPIRE)};
 const cookieRefreshOptions = {httpOnly: true, sameSite: "Lax", path: "/auth/refresh", maxAge: ms(process.env.JWT_REFRESH_EXPIRE)};
