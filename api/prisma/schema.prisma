@@ -8,6 +8,8 @@ datasource db {
 }
 
 model User {
+  @@map("users")
+
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   password      String
   username      String
@@ -15,6 +17,8 @@ model User {
 }
 
 model Account {
+  @@map("accountany_accounts")
+
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   description   String
@@ -22,6 +26,8 @@ model Account {
 }
 
 model Transaction {
+  @@map("accountany_transactions")
+
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   account       Account @relation(fields: [accountId], references: [id])
   accountId     String @db.ObjectId

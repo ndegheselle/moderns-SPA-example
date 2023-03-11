@@ -29,7 +29,7 @@ async function importAccount(req, reply)
 
     let transactions = importFile(data);
 
-    return reply.status(200).send(accountsRepo.creates(accountId, transactions));
+    return reply.status(200).send(transactionsRepo.creates(accountId, transactions));
 }
 
 export default async function(app, opts) {
