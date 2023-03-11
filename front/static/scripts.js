@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
             callback: function(element) {
                 const modal = element.dataset.modal;
                 const $target = document.getElementById(modal);
-                open($target);
+                show($target);
             }
         },
         {
@@ -21,13 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
             selector: '.dropdown-trigger [aria-haspopup="true"]',
             callback: function(element) {
                 const $target = element.closest('.dropdown');
-                open($target);
+                show($target);
             }
         }
     ]
 
-    // Functions to open and close
-    function open($el) {
+    // Functions to show and close
+    function show($el) {
         $el.classList.add('is-active');
     }
 
@@ -64,4 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
             closeAll('.dropdown');
         }
     });
+
+    // XXX : may want to find a better name (modal / menu )
+    window.dialog = {
+        show,
+        close
+    };
 });

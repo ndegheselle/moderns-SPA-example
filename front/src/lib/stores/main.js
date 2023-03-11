@@ -12,6 +12,5 @@ export const confirmModal = writable({
     title: "",
     message: "",
     type: "",
-    yes: Function,
-    no: Function
+    callback: Function,
 });

@@ -4,19 +4,36 @@ import { importFile } from "#services/import.js";
 
 async function create(req, reply)
 {
-    const { account } = req.body;
-    return reply.status(200).send(accountsRepo.create(account));
+    const newAccount = req.body;
+    const account = await accountsRepo.create(newAccount);
+    return reply.status(200).send(account);
 }
 
 async function getAccounts(req, reply)
 {
-    return reply.status(200).send(accountsRepo.getAll());
+    const accounts = await accountsRepo.getAll();
+    return reply.status(200).send(accounts);
 }
 
-async function getAccount(req, reply)
+async function deleteAccount(req, reply)
 {
     const { accountId } = req.params;
-    return reply.status(200).send(accountsRepo.getById(accountId));
+    await accountsRepo.deleteById(accountId);
+    return reply.status(200).send({message: "Successfully deleted."});
+}
+
+async function getTransactions(req, reply)
+{
+    const { accountId } = req.params;
+    const transactions = await transactionsRepo.getByAccountId(accountId);
+    return reply.status(200).send(transactions);
+}
+
+async function updateAccount(req, reply) {
+    const { accountId } = req.params;
+    const updated = req.body;
+    const account = await accountsRepo.updateAccount(accountId, updated);
+    return reply.status(200).send(account);
 }
 
 async function importAccount(req, reply)
@@ -33,9 +50,11 @@ async function importAccount(req, reply)
 }
 
 export default async function(app, opts) {
-    app.post("/accounts/accounts", create);
-    app.get("/accounts/accounts", getAccounts);
-    app.get("/accounts/accounts/:accountId", getAccount);
+    app.post("/accounts", create);
+    app.get("/accounts", getAccounts);
+    app.delete("/accounts/:accountId", deleteAccount);
+    app.get("/accounts/:accountId/transactions", getTransactions);
+    app.put("/accounts/:accountId", updateAccount);
 
     app.post("/accounts/import", importAccount);
 };

@@ -6,10 +6,7 @@ export function login(username, password)
         method: "post",
         body: { username, password },
         ignoreRefresh: true
-    })
-        .then(async function (response) {
-            return response.decodedBody;
-        });
+    });
 }
 
 export function refresh()
@@ -17,9 +14,6 @@ export function refresh()
     return fetchApi(`/auth/refresh`, {
         method: "post",
         ignoreRefresh: true
-    })
-    .then(async function (response) {
-        return response.decodedBody;
     });
 }
 

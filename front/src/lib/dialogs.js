@@ -25,8 +25,7 @@ export const confirm = {
             m.title = title;
             m.type = type || "is-success";
             result = new Promise(function(resolve, reject) {
-                m.yes = resolve;
-                m.no = reject;
+                m.callback = resolve;
             });
             return m;
         });

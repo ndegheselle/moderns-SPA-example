@@ -4,10 +4,7 @@
     function handleClosing(success)
     {
         $confirmModal.show = false;
-        if (!success)
-            $confirmModal.no();
-        else
-            $confirmModal.yes();
+        $confirmModal.callback(success);
     }
 
 </script>
