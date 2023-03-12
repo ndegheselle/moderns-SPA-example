@@ -39,12 +39,13 @@ async function updateAccount(req, reply) {
 async function importAccount(req, reply)
 {
     const { accountId } = req.params;
-    const data = await req.file();
+    const { bank } = req.query;
+    const file = await req.file();
 
-    if (!accountId) return reply.status(400).send({ message: "No account id provided." });
-    if (!data) return reply.status(400).send({ message: "No file provided." });
+    if (!accountId || !bank) return reply.status(400).send({ message: "No account id or bank provided." });
+    if (!file) return reply.status(400).send({ message: "No file provided." });
 
-    let transactions = importFile(data);
+    let transactions = importFile(file, bank);
 
     return reply.status(200).send(transactionsRepo.creates(accountId, transactions));
 }
@@ -56,5 +57,5 @@ export default async function(app, opts) {
     app.get("/accounts/:accountId/transactions", getTransactions);
     app.put("/accounts/:accountId", updateAccount);
 
-    app.post("/accounts/import", importAccount);
+    app.post("/accounts/:accountId/import", importAccount);
 };

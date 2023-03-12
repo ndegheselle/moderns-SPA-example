@@ -36,7 +36,7 @@ export function importFile(file, options)
     let data = new FormData();
     data.append('file', file);
 
-    return fetchApi("/accountancy/accounts/import", {
+    return fetchApi(`/accountancy/accounts/${options.accountId}/import?bank=${options.bank}`, {
         method: "post",
         body: data
     });

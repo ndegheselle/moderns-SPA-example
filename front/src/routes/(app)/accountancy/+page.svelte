@@ -109,8 +109,8 @@
             </div>
         </section>
     {:else}
-        <div class="accountancy-layout columns is-gapless">
-            <div class="column transaction-list panel">
+        <div class="accountancy-layout ">
+            <div class="transaction-list panel">
                 <p class="panel-heading">Transactions</p>
 
                 {#each transactions as transaction}
@@ -134,7 +134,7 @@
     {/if}
 </div>
 
-<ModalImport />
+<ModalImport accountId={selectedAccountId}/>
 <ModalAccount currentAccount={modalData}/>
 
 <style scoped>

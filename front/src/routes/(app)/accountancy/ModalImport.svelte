@@ -2,6 +2,7 @@
     import { importFile } from "@lib/api/accountancy.js";
 
     let files;
+    let bank = "labanquepostale";
 
     function isFormValid(files) {
         return files && files.length === 1;
@@ -9,9 +10,10 @@
 
     function sendImport()
     {
-        importFile(files[0]);
+        importFile(files[0], {accountId: accountId, bank: bank});
     }
 
+    export let accountId = null;
 </script>
 
 <div class="modal" id="ModalImport">
@@ -24,11 +26,11 @@
         <section class="modal-card-body">
             <div class="field">
                 <label class="label">
-                    Origine
+                    Bank
                     <div class="control">
                         <div class="select is-fullwidth">
-                            <select>
-                                <option selected>La banque postal : CSV</option>
+                            <select bind:value={bank}>
+                                <option value="labanquepostale">La banque postal : CSV</option>
                             </select>
                         </div>
                     </div>
