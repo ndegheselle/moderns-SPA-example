@@ -20,7 +20,7 @@ const app = fastify({
 
 app.register(cors, {
   origin: process.env.ACCEPTED_DOMAIN,
-  methods: ['GET', 'PUT', 'POST'],
+  methods: ['GET', 'PUT', 'POST', 'DELETE'],
   credentials: true
 });
 app.register(cookie);

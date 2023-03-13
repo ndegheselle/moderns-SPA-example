@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import { usersRepository } from '../models/users.js';
+import { usersRepo } from '#models/users.js';
 
 export function createAccessToken(user)
 {
@@ -10,7 +10,7 @@ export function createAccessToken(user)
 export async function createRefreshToken(user)
 {
     const token = jwt.sign({ user: {id: user.id} }, process.env.JWT_REFRESH_KEY, { expiresIn: process.env.JWT_REFRESH_EXPIRE });
-    await usersRepository.saveRefreshToken(user.id, token);
+    await usersRepo.saveRefreshToken(user.id, token);
     return token;
 }
 
@@ -37,6 +37,6 @@ export function decodeRefreshToken(token)
     { return null; }
     
     // If refresh token blacklisted
-    if (!decoded || !usersRepository.checkRefreshToken(token, decoded)) return null;
+    if (!decoded || !usersRepo.checkRefreshToken(token, decoded)) return null;
     return decoded.user;
 }

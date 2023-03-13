@@ -7,9 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users {
+model User {
+  @@map("users")
+
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   password      String
   username      String
   refreshToken  String?
+}
+
+model Account {
+  @@map("accountany_accounts")
+
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  description   String
+  
+  transactions  Transaction[]
+}
+
+model Transaction {
+  @@map("accountany_transactions")
+
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  accountId     String @db.ObjectId
+  
+  account       Account @relation(fields: [accountId], references: [id])
 }

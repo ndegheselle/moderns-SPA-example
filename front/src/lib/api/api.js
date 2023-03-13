@@ -36,7 +36,7 @@ export function fetchApi(url, options = {}) {
     .then((response) => {
       // Handle errors
       if (!response.ok) throw new ApiError(response.status, response.decodedBody.message);
-      return Promise.resolve(response);
+      return Promise.resolve(response.decodedBody);
     })
     // Handle token error and use refresh token
     .catch(async (error) => {
