@@ -116,9 +116,7 @@
                 {#each transactions as transaction}
                     <div class="panel-block columns is-gapless">
                         <div class="column">
-                            <span>{transaction.name}</span>
-                            <span class="has-text-grey-light"
-                                >{transaction.description}</span
+                            <span>{transaction.description}</span
                             >
                         </div>
                         <div class="column is-narrow has-text-right">
