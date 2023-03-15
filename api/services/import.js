@@ -55,9 +55,9 @@ function convertToFloat(string)
 function convertToDate(string)
 {
     let parts = string.split("/");
-    let dt = new Date(parseInt(parts[2], 10),
+    let dt = new Date(Date.UTC(parseInt(parts[2], 10),
                   parseInt(parts[1], 10) - 1,
-                  parseInt(parts[0], 10));
+                  parseInt(parts[0], 10)));
                    
     return dt;
 }

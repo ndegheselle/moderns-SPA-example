@@ -34,6 +34,7 @@ model Transaction {
   accountId     String @db.ObjectId
   
   date          DateTime
+  orderNumber   Int
   description   String
   value         Float
 
