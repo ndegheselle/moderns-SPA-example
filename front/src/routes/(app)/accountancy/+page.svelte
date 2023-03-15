@@ -3,26 +3,17 @@
 
     import { confirm } from "@lib/dialogs.js";
     import { accounts } from "@lib/stores/accounts.js";
-    import {
-        getAccounts,
-        getTransactions,
-        deleteAccount,
-    } from "@lib/api/accountancy.js";
+    import { getAccounts, deleteAccount } from "@lib/api/accountancy.js";
     import Money from "@components/Money.svelte";
     import ModalImport from "./ModalImport.svelte";
     import ModalAccount from "./ModalAccount.svelte";
+    import Transactions from "./Transactions.svelte";
 
     let modalData = null;
 
     let selectedAccountId;
-    let transactions = [];
 
     $: selectedAccount = $accounts.find((o) => o.id === selectedAccountId);
-    $: if (selectedAccountId) {
-        getTransactions(selectedAccountId).then((transac) => {
-            transactions = transac;
-        });
-    }
 
     onMount(async () => {
         $accounts = await getAccounts();
@@ -48,14 +39,13 @@
             });
     }
 
-    function showModal(account)
-    {
+    function showModal(account) {
         modalData = account;
     }
 </script>
 
 <div class="container">
-    <div class="is-flex px-1">
+    <div class="accountancy-menu is-flex px-1">
         <div class="select">
             <select bind:value={selectedAccountId}>
                 {#each $accounts as account}
@@ -63,11 +53,19 @@
                 {/each}
             </select>
         </div>
-        <button class="button is-light ml-1" on:click={() => showModal({name: "", description: ""})}>
+        <button
+            class="button is-light ml-1"
+            on:click={() => showModal({ name: "", description: "" })}
+        >
             <i class="gg-math-plus" />
         </button>
 
         <div class="ml-auto">
+            {#if selectedAccount}
+                <span class="header-money-tag mr-2"
+                    ><Money value={selectedAccount.balance} /></span
+                >
+            {/if}
             <div class="dropdown is-right">
                 <div class="dropdown-trigger">
                     <button class="button is-light" aria-haspopup="true">
@@ -101,54 +99,15 @@
         </div>
     </div>
 
-    {#if !selectedAccount}
-        <section class="hero has-text-centered">
-            <div class="hero-body">
-                <p class="title">The account transactions here</p>
-                <p class="subtitle">Start by creating an account.</p>
-            </div>
-        </section>
-    {:else}
-        <div class="accountancy-layout ">
-            <div class="transaction-list panel">
-                <p class="panel-heading">Transactions</p>
-
-                {#each transactions as transaction}
-                    <div class="panel-block columns is-gapless">
-                        <div class="column">
-                            <span 
-                                >{new Date(transaction.date).toLocaleDateString()}</span>
-                            <span class="has-text-grey-light">{transaction.description}</span
-                            >
-                        </div>
-                        <div class="column is-narrow has-text-right">
-                            <Money value={transaction.value} />
-                        </div>
-                    </div>
-                {/each}
-            </div>
-        </div>
-    {/if}
+    <Transactions {selectedAccount} />
 </div>
 
-<ModalImport accountId={selectedAccountId}/>
-<ModalAccount currentAccount={modalData}/>
+<ModalImport accountId={selectedAccountId} />
+<ModalAccount currentAccount={modalData} />
 
 <style scoped>
-    .accountancy-layout .column {
-        margin: 0.2rem;
-    }
-
-    .accountancy-layout {
-        margin: 0;
-        padding: 0.2rem;
-    }
-    .transaction-list .columns {
-        margin: 0;
-    }
-
-    .accountancy-layout .column > span {
-        display: block;
-        line-height: 1.2;
+    .accountancy-menu .header-money-tag {
+        font-weight: lighter;
+        font-size: 1.6rem;
     }
 </style>
