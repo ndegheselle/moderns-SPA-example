@@ -32,3 +32,11 @@ Docker cmd :
 ```
 docker-compose exec [nom-container] /bin/bash
 ```
+
+# Todos
+
+## Plugin system
+
+Make it easy for an external dev to add new plugin (set of routes/models for api and pages/api requests for front) :
+- Fastify : using patterns and regroup in folders (using `dirNameRoutePrefix`, `matchFilter`, ...)
+- SvelteKit : simply put everything int routes ? Or try to understand how embeded projects are made.
