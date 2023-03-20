@@ -13,6 +13,9 @@ export default defineConfig({
             '@components': path.resolve('./src/lib/components'),
             '@lib': path.resolve('./src/lib'),
         }
+    },
+    server: {
+        host: "0.0.0.0"
     }
     /*
 	server: {
