@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon ./server.js"
+    "dev": "nodemon ./server.js --legacy-watch"
   },
   "author": "",
   "license": "ISC",

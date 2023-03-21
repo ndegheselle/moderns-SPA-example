@@ -54,6 +54,7 @@ export function fetchApi(url, options = {}) {
           throw error;
         }
       }
+      throw error;
     });
    
 }

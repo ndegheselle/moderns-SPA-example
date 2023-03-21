@@ -40,3 +40,7 @@ docker-compose exec [nom-container] /bin/bash
 Make it easy for an external dev to add new plugin (set of routes/models for api and pages/api requests for front) :
 - Fastify : using patterns and regroup in folders (using `dirNameRoutePrefix`, `matchFilter`, ...)
 - SvelteKit : simply put everything int routes ? Or try to understand how embeded projects are made.
+
+## Reverse proxy
+
+Use nginx reverse proxy

@@ -10,7 +10,7 @@ async function login(req, reply)
     if (!req.body.username || !req.body.password) return reply.status(400).send({ message: "No login information provided." });
 
     let user = await usersRepo.getByUsernamePassword(req.body.username, req.body.password);
-    if (!user) return reply.status(400).send({ message: "Wrong creadentials." });
+    if (!user) return reply.status(400).send({ message: "Wrong credentials." });
 
     // Tokens
     reply.setCookie('access-token', createAccessToken(user), cookieAccessOptions);
