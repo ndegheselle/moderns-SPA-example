@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const transactionsRepo = {
+export default {
     creates: async function (accountId, dateMin, dateMax, transactionsList) {
 
         const transacNumberByDate = {};

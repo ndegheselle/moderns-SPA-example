@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const accountsRepo = {
+export default {
     getAll: async function () {
         return await prisma.account.findMany();
     },

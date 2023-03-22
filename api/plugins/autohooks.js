@@ -1,4 +1,4 @@
-import { decodeAccessToken } from '../services/auth.js'
+import { decodeAccessToken } from './auth/tokens.js'
 
 export default async function (app, opts) {
     // Check access token
