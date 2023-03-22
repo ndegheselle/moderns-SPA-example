@@ -1,6 +1,6 @@
 <script>
-    import { createAccount, updateAccount } from "@lib/api/accountancy.js";
-    import { accounts } from "@lib/stores/accounts.js";
+    import { createAccount, updateAccount } from "@pages/accountancy/api.js";
+    import { accounts } from "@pages/store.js";
 
     async function sendAccount() {
         if (currentAccount.id) {

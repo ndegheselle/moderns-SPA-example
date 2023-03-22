@@ -1,5 +1,5 @@
 <script>
-    import { importFile } from "@lib/api/accountancy.js";
+    import { importFile } from "@pages/accountancy/api.js";
 
     let files;
     let bank = "labanquepostale";

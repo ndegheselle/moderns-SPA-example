@@ -1,6 +1,6 @@
 <script>
-    import { getTransactions } from "@lib/api/accountancy.js";
-    import Money from "@components/Money.svelte";
+    import { getTransactions } from "@pages/accountancy/api.js";
+    import Money from "@pages/accountancy/components/Money.svelte";
 
     let transactions = [];
 

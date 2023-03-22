@@ -12,6 +12,7 @@ export default defineConfig({
             // these are the aliases and paths to them
             '@components': path.resolve('./src/lib/components'),
             '@lib': path.resolve('./src/lib'),
+            '@pages': path.resolve('./src/pages'),
         }
     },
     server: {
@@ -20,10 +21,4 @@ export default defineConfig({
             usePolling: true
         }
     }
-    /*
-	server: {
-        proxy: {
-            '/api': 'http://localhost:3000'
-        }
-    }*/
 });
