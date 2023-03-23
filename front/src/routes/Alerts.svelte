@@ -1,5 +1,5 @@
 <script>
-    import { alert } from "@lib/stores/main.js";
+    import { alert } from "@global/store.js";
 
     // 3s
     const ALERT_DELAY = 3000;

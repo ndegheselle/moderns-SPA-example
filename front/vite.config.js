@@ -12,7 +12,7 @@ export default defineConfig({
             // these are the aliases and paths to them
             '@components': path.resolve('./src/lib/components'),
             '@lib': path.resolve('./src/lib'),
-            '@pages': path.resolve('./src/pages'),
+            '@global': path.resolve('./src/lib/global'),
         }
     },
     server: {

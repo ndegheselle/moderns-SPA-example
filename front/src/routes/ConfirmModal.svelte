@@ -1,5 +1,5 @@
 <script>
-    import { confirmModal } from "@lib/stores/main.js";
+    import { confirmModal } from "@global/store.js";
 
     function handleClosing(success)
     {

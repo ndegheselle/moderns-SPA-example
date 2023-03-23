@@ -29,6 +29,7 @@
   },
   "imports": {
     "#services/*": "./services/*",
-    "#models/*": "./models/*"
+    "#models/*": "./models/*",
+    "#lib/*": "./lib/*"
   }
 }

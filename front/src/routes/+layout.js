@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
-import { currentUser, IsConnected } from '@lib/stores/main.js';
-import { refresh } from "@lib/api/auth.js";
+import { currentUser, IsConnected } from '@global/store.js';
+import { refresh } from "@global/api/auth.js";
 
 
 // Check for each page is still connected

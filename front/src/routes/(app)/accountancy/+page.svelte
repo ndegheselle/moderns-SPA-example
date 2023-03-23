@@ -1,10 +1,10 @@
 <script>
     import { onMount } from "svelte";
 
-    import { confirm } from "@lib/dialogs.js";
-    import { accounts } from "@pages/accountancy/store.js";
-    import { getAccounts, deleteAccount } from "@pages/accountancy/api.js";
-    import Money from "@pages/accountancy/components/Money.svelte";
+    import { confirm } from "@global/dialogs.js";
+    import { accounts } from "@lib/accountancy/store.js";
+    import { getAccounts, deleteAccount } from "@lib/accountancy/api.js";
+    import Money from "@lib/accountancy/components/Money.svelte";
     import ModalImport from "./ModalImport.svelte";
     import ModalAccount from "./ModalAccount.svelte";
     import Transactions from "./Transactions.svelte";

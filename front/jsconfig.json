@@ -4,6 +4,7 @@
 		"paths": {
              // name and path to aliases
 			"@lib": ["src/lib"],
+			"@global": ["src/lib/global"],
             "@components": ["src/lib/components"],
 		}
 	},

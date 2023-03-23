@@ -1,6 +1,6 @@
-import accountsRepo from "./accountsRepo.js";
-import transactionsRepo from "./transactionsRepo.js";
-import { importFile } from "./import.js";
+import accountsRepo from "#lib/accountancy/repositories/accountsRepo.js";
+import transactionsRepo from "#lib/accountancy/repositories/transactionsRepo.js";
+import { importFile } from "#lib/accountancy/import.js";
 
 async function create(req, reply)
 {

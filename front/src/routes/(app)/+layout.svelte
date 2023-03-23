@@ -1,7 +1,7 @@
 <script>
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
-  import { logout } from "@lib/api/auth.js";
+  import { logout } from "@global/api/auth.js";
 
   let menuOpen = false;
 

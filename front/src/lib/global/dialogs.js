@@ -1,4 +1,4 @@
-import { alert, confirmModal } from "./stores/main.js";
+import { alert, confirmModal } from "./store.js";
 
 function showAlert(message, type) {
     alert.set({
