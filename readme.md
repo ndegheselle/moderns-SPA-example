@@ -9,7 +9,22 @@ Proxy from frontend to backend.
 
 # Setup a replica mongodb database
 
-On windows : https://adelachao.medium.com/create-a-mongodb-replica-set-in-windows-edeab1c85894
+## Windows
+
+Tutorial : https://adelachao.medium.com/create-a-mongodb-replica-set-in-windows-edeab1c85894
+
+## Linux
+
+Open the `mongosh` cmd on the db server :
+```
+docker-compose exec db /bin/sh
+mongosh
+```
+Use this setup :
+```js
+config = { "_id": "s0", "members": [ { "_id": 0, "host": "db:27017" }] }
+rs.initiate(config)
+```
 
 # Docker
 
