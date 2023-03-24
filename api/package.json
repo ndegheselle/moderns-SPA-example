@@ -5,8 +5,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "node server",
-    "dev": "nodemon ./server.js"
+    "start": "node server",
+    "dev": "nodemon ./server.js --legacy-watch"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +29,7 @@
   },
   "imports": {
     "#services/*": "./services/*",
-    "#models/*": "./models/*"
+    "#models/*": "./models/*",
+    "#lib/*": "./lib/*"
   }
 }

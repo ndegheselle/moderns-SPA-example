@@ -22,6 +22,7 @@ model Account {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   description   String
+  balance       Float?
   
   transactions  Transaction[]
 }
@@ -32,5 +33,10 @@ model Transaction {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   accountId     String @db.ObjectId
   
+  date          DateTime
+  orderNumber   Int
+  description   String
+  value         Float
+
   account       Account @relation(fields: [accountId], references: [id])
 }

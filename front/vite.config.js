@@ -12,12 +12,13 @@ export default defineConfig({
             // these are the aliases and paths to them
             '@components': path.resolve('./src/lib/components'),
             '@lib': path.resolve('./src/lib'),
+            '@global': path.resolve('./src/lib/global'),
+        }
+    },
+    server: {
+        host: "0.0.0.0",
+        watch: {
+            usePolling: true
         }
     }
-    /*
-	server: {
-        proxy: {
-            '/api': 'http://localhost:3000'
-        }
-    }*/
 });

@@ -1,4 +1,4 @@
-import { fetchApi, ApiError } from "./api.js";
+import { fetchApi } from "./base.js";
 
 export function login(username, password)
 {

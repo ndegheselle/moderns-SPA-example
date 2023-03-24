@@ -37,4 +37,4 @@ app.register(autoLoad, {
   // options: { prefix: 'api' }
 })
 
-app.listen({ port: process.env.PORT })
+app.listen({host: '0.0.0.0', port: process.env.PORT })

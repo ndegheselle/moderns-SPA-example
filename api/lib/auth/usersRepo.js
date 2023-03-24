@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-export const usersRepo = {
+export default {
     getById: async function(id) {
         const user = await prisma.user.findUnique({
             where: { id: id },

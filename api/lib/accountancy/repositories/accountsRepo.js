@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const accountsRepo = {
+export default {
     getAll: async function () {
         return await prisma.account.findMany();
     },
@@ -28,9 +28,9 @@ export const accountsRepo = {
             },
         });
 
-        const transaction = await prisma.$transaction([deleteTransactions, deleteAccount]);
+        const transac = await prisma.$transaction([deleteTransactions, deleteAccount]);
     },
-    updateAccount: async function (accountId, account) {
+    updateAccount: async function (accountId, account, balance) {
         return await prisma.account.update({
             where: {
                 id: accountId,
@@ -38,6 +38,7 @@ export const accountsRepo = {
             data: {
                 name: account.name,
                 description: account.description,
+                balance: account.balance,
             },
         })
     }

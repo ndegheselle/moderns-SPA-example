@@ -1,4 +1,4 @@
-import { fetchApi } from "./api.js";
+import { fetchApi } from "@global/api/base.js";
 
 export function createAccount(account)
 {

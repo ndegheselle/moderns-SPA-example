@@ -1,6 +1,6 @@
 import ms from "ms";
-import { usersRepo } from "#models/users.js";
-import { createAccessToken, createRefreshToken, decodeRefreshToken } from "#services/auth.js";
+import usersRepo from "#lib/auth/usersRepo.js";
+import { createAccessToken, createRefreshToken, decodeRefreshToken } from "#lib/auth/tokens.js";
 
 const cookieAccessOptions = {httpOnly: true, sameSite: "Lax", path: "/", maxAge: ms(process.env.JWT_EXPIRE)};
 const cookieRefreshOptions = {httpOnly: true, sameSite: "Lax", path: "/auth/refresh", maxAge: ms(process.env.JWT_REFRESH_EXPIRE)};
@@ -10,7 +10,7 @@ async function login(req, reply)
     if (!req.body.username || !req.body.password) return reply.status(400).send({ message: "No login information provided." });
 
     let user = await usersRepo.getByUsernamePassword(req.body.username, req.body.password);
-    if (!user) return reply.status(400).send({ message: "Wrong creadentials." });
+    if (!user) return reply.status(400).send({ message: "Wrong credentials." });
 
     // Tokens
     reply.setCookie('access-token', createAccessToken(user), cookieAccessOptions);

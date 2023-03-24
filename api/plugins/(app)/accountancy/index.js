@@ -1,6 +1,6 @@
-import { accountsRepo } from "#models/accounts.js";
-import { transactionsRepo } from "#models/transactions.js";
-import { importFile } from "#services/import.js";
+import accountsRepo from "#lib/accountancy/repositories/accountsRepo.js";
+import transactionsRepo from "#lib/accountancy/repositories/transactionsRepo.js";
+import { importFile } from "#lib/accountancy/import.js";
 
 async function create(req, reply)
 {
@@ -45,9 +45,12 @@ async function importAccount(req, reply)
     if (!accountId || !bank) return reply.status(400).send({ message: "No account id or bank provided." });
     if (!file) return reply.status(400).send({ message: "No file provided." });
 
-    let transactions = importFile(file, bank);
+    let { balance, dateMin, dateMax, transactions } = await importFile(file, bank);
 
-    return reply.status(200).send(transactionsRepo.creates(accountId, transactions));
+    await transactionsRepo.creates(accountId, dateMin, dateMax, transactions);
+    let account = await accountsRepo.updateAccount(accountId, { balance });
+
+    return reply.status(200).send(account);
 }
 
 export default async function(app, opts) {
