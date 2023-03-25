@@ -1,4 +1,6 @@
 <script>
+    import { alerts } from "@global/dialogs.js";
+    import modals from "@global/modals.js";
     import { importFile } from "@lib/accountancy/api.js";
 
     let files;
@@ -8,9 +10,15 @@
         return files && files.length === 1;
     }
 
-    function sendImport()
+    async function sendImport()
     {
-        importFile(files[0], {accountId: accountId, bank: bank});
+        let result = await importFile(files[0], {accountId: accountId, bank: bank});
+        modals.close("ModalImport");
+
+        if (result.newTransactionsCount)
+            alerts.success(`${transactionsImportedCount} new transactions imported.`);
+        else
+            alerts.success(`No new transaction imported.`);
     }
 
     export let accountId = null;

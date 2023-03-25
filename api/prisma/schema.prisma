@@ -37,6 +37,7 @@ model Transaction {
   orderNumber   Int
   description   String
   value         Float
+  type          String?
 
   account       Account @relation(fields: [accountId], references: [id])
 }

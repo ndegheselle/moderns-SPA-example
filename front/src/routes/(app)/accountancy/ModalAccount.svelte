@@ -72,7 +72,7 @@
             <footer class="modal-card-foot is-justify-content-flex-end">
                 <button class="button" data-dismiss="modal">Cancel</button>
                 <button class="button is-success" on:click={sendAccount}
-                    >Send</button
+                    >Add</button
                 >
             </footer>
         </div>

@@ -47,10 +47,10 @@ async function importAccount(req, reply)
 
     let { balance, dateMin, dateMax, transactions } = await importFile(file, bank);
 
-    await transactionsRepo.creates(accountId, dateMin, dateMax, transactions);
+    let newTransactions = await transactionsRepo.creates(accountId, dateMin, dateMax, transactions);
     let account = await accountsRepo.updateAccount(accountId, { balance });
 
-    return reply.status(200).send(account);
+    return reply.status(200).send({"newTransactionsCount": newTransactions.length});
 }
 
 export default async function(app, opts) {

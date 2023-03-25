@@ -17,7 +17,7 @@
     <section class="hero has-text-centered">
         <div class="hero-body">
             <p class="title">The account transactions here</p>
-            <p class="subtitle">Start by creating an account.</p>
+            <p class="subtitle">Start by adding an account.</p>
         </div>
     </section>
 {:else}

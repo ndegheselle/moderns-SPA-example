@@ -61,7 +61,7 @@
         </button>
 
         <div class="ml-auto">
-            {#if selectedAccount}
+            {#if selectedAccount && selectedAccount.balance}
                 <span class="header-money-tag mr-2"
                     ><Money value={selectedAccount.balance} /></span
                 >

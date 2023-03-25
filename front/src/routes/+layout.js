@@ -1,10 +1,12 @@
 import { redirect } from '@sveltejs/kit';
 import { currentUser, IsConnected } from '@global/store.js';
 import { refresh } from "@global/api/auth.js";
-
+import { init as initModals } from "@global/modals.js"
 
 // Check for each page is still connected
 export const load = async ({ route }) => {
+  initModals();
+
   if (IsConnected() || route.id == "/login") return;
 
   try {
