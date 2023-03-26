@@ -1,7 +1,7 @@
 // Functions to show and close
 const targets = [
     {
-        selector: '[data-modal]',
+        selector: '[data-modal][aria-haspopup="true"]',
         callback: function (element) {
             const modal = element.dataset.modal;
             const $target = document.getElementById(modal);

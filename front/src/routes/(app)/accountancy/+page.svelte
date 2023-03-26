@@ -77,7 +77,7 @@
                         <a
                             href="#"
                             class="dropdown-item"
-                            data-modal="ModalImport">Import</a
+                            data-modal="ModalImport" aria-haspopup="true">Import</a
                         >
                         <hr class="dropdown-divider" />
                         <a
