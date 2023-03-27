@@ -11,6 +11,7 @@ export default {
         return {id: user.id, username: user.username};
     },
     getByUsernamePassword: async function(username, password) {
+        // bcrypt.hash("test", 10, function(err, hash) {console.log("Hashed password", hash);});
         const user = await prisma.user.findFirst({
             where: { username: username },
         });

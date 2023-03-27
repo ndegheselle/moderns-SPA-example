@@ -12,6 +12,7 @@ Proxy from frontend to backend.
 ## Windows
 
 Tutorial : https://adelachao.medium.com/create-a-mongodb-replica-set-in-windows-edeab1c85894
+Use 
 
 ## Linux
 
@@ -22,8 +23,7 @@ mongosh
 ```
 Use this setup :
 ```js
-config = { "_id": "s0", "members": [ { "_id": 0, "host": "db:27017" }] }
-rs.initiate(config)
+rs.initiate()
 ```
 
 # Docker
@@ -56,8 +56,3 @@ Make it easy for an external dev to add new plugin (set of routes/models for api
 - Fastify : using patterns and regroup in folders (using `dirNameRoutePrefix`, `matchFilter`, ...)
 - SvelteKit : simply put everything in routes ? Or try to understand how embeded projects are made.
     - Working but not fan : https://github.com/sveltejs/kit/issues/6031
-
-## Reverse proxy
-
-Use nginx reverse proxy
-- Redirect API

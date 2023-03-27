@@ -45,6 +45,7 @@ export default {
 
                 // Safe guard / optimisation since bank can change transactions names
                 if (lastTransaction.date < transactionsList[i].date) {
+                    console.log("Slice index : ", i);
                     transactionsList = transactionsList.slice(0, i);
                     break;
                 }

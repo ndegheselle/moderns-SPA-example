@@ -36,6 +36,18 @@ async function updateAccount(req, reply) {
     return reply.status(200).send(account);
 }
 
+async function updateTransactionsType(req, reply)
+{
+    const updated = req.body;
+
+    if (!Array.isArray(updated))
+        updated = [updated]
+
+    // const transactions = await accountsRepo.updateAccount(accountId, updated);
+
+    return reply.status(200).send({"udatedTransactionsCount": transactions.length});
+}
+
 async function importAccount(req, reply)
 {
     const { accountId } = req.params;
@@ -57,8 +69,10 @@ export default async function(app, opts) {
     app.post("/accounts", create);
     app.get("/accounts", getAccounts);
     app.delete("/accounts/:accountId", deleteAccount);
-    app.get("/accounts/:accountId/transactions", getTransactions);
     app.put("/accounts/:accountId", updateAccount);
+    
+    app.get("/accounts/:accountId/transactions", getTransactions);
+    app.put("/accounts/:accountId/transactions", updateTransactionsType);
 
     app.post("/accounts/:accountId/import", importAccount);
 };
