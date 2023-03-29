@@ -1,41 +1,54 @@
 <script>
     $: haveSelected = !!list.find((t) => t.selected);
+
+    function selectRow(row) {
+        if (!options.hasMultiselect) list.forEach((r) => (r.selected = false));
+        row.selected = true;
+    }
+
     export let list = [];
+    export let title = "";
+    export let options = {
+        hasMultiselect: false,
+    };
 </script>
 
-<div class="tpanel">
-    <div class="panel-block">
-        <button class="button">Filters</button>
-        {#if haveSelected}
-            <div class="dropdown is-right ml-auto">
-                <div class="dropdown-trigger">
-                    <button class="button" aria-haspopup="true">
-                        Actions <i
-                            class="ml-2 gg-chevron-down"
-                        />
-                    </button>
-                </div>
-                <div class="dropdown-menu" role="menu">
-                    <slot name="action-menu"></slot>
-                </div>
-            </div>
-        {/if}
-    </div>
+<div class="panel">
+    {#if title}
+        <div class="panel-heading">
+            {title}
 
-    {#each list as element}
+            {#if $$slots.actionMenu}
+                <div class="dropdown is-right">
+                    <div class="dropdown-trigger">
+                        <button class="button is-light" aria-haspopup="true">
+                            <i class="gg-more-vertical-alt" />
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                            <slot name="actionMenu" />
+                        </div>
+                    </div>
+                </div>
+            {/if}
+        </div>
+    {/if}
+
+    {#each list as row}
         <a
-            class:is-active={element.selected}
+            class:is-active={option.hasMultiselect && row.selected}
             class="panel-block columns is-gapless"
-            on:click={() => (element.selected = true)}
+            on:click={() => selectRow(row)}
         >
-            {#if haveSelected}
+            {#if options.hasMultiselect && haveSelected}
                 <input
                     type="checkbox"
-                    bind:checked={element.selected}
+                    bind:checked={row.selected}
                     on:click|stopPropagation
                 />
             {/if}
-            <slot name="row" row={element}></slot>
+            <slot name="row" {row} />
         </a>
     {/each}
 </div>
