@@ -18,6 +18,7 @@ const targets = [
     {
         selector: '.dropdown-trigger [aria-haspopup="true"]',
         callback: function (element) {
+            closeAll(".dropdown");
             const $target = element.closest('.dropdown');
             show($target);
         }

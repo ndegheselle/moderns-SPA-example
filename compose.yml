@@ -7,6 +7,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "5173:5173"
     volumes:
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf
     restart: always
@@ -31,7 +32,7 @@ services:
       - /front/node_modules
       - ./front:/app
     expose:
-      - "5173"
+      - "80"
     command: sh -c "npm install && npm run dev "
     depends_on:
       - db

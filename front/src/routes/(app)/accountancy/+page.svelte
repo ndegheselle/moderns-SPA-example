@@ -2,23 +2,42 @@
     import { onMount } from "svelte";
 
     import { confirm } from "@global/dialogs.js";
-    import { accounts } from "@lib/accountancy/store.js";
-    import { getAccounts, deleteAccount } from "@lib/accountancy/api.js";
+    import {
+        getAccounts,
+        deleteAccount,
+        getTransactions,
+    } from "@lib/accountancy/api.js";
     import Money from "@lib/accountancy/components/Money.svelte";
     import ModalImport from "./ModalImport.svelte";
     import ModalAccount from "./ModalAccount.svelte";
-    import Transactions from "./Transactions.svelte";
+    import List from "@components/List.svelte";
+    import IconText from "@components/IconText.svelte";
 
     let modalData = null;
 
     let selectedAccountId;
+    let selectedAccount;
 
-    $: selectedAccount = $accounts.find((o) => o.id === selectedAccountId);
+    let accounts = [];
+    let transactions = [];
+    let categories = [];
 
-    onMount(async () => {
-        $accounts = await getAccounts();
-        selectedAccountId = $accounts[0]?.id;
-    });
+    $: onAccountChange(selectedAccount);
+
+    async function onAccountChange(accountId) {
+        if (accountId) {
+            selectedAccount = accounts.find((o) => o.id === selectedAccountId);
+            transactions = getTransactions(accountId);
+
+            categories = Object.values(transactions.reduce((acc, transaction) => {
+                if (!acc[transaction.category])
+                    acc[transaction.category] = {name: transaction.category, total: 0};
+                
+                acc[transaction.category].total += transaction.value;
+                return acc;
+            }));
+        }
+    }
 
     function confirmDelete() {
         confirm
@@ -30,10 +49,10 @@
             .then((result) => {
                 if (result) {
                     return deleteAccount(selectedAccountId).then(() => {
-                        $accounts = $accounts.filter(
+                        accounts = accounts.filter(
                             (a) => a.id != selectedAccountId
                         );
-                        selectedAccountId = $accounts[0]?.id;
+                        selectedAccountId = accounts[0]?.id;
                     });
                 }
             });
@@ -42,72 +61,64 @@
     function showModal(account) {
         modalData = account;
     }
+
+    onMount(async () => {
+        accounts = await getAccounts();
+        selectedAccountId = accounts[0]?.id;
+    });
 </script>
 
 <div class="container">
-    <div class="accountancy-menu is-flex px-1">
-        <div class="select">
-            <select bind:value={selectedAccountId}>
-                {#each $accounts as account}
-                    <option value={account.id}>{account.name}</option>
-                {/each}
-            </select>
+    <div class="columns">
+        <div class="column">
+            <List title="Accounts" list={accounts}>
+                <div slot="actionMenu" class="dropdown-content">
+                    <a class="dropdown-item">
+                        <IconText icon="gg-math-plus">Add new</IconText>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a class="dropdown-item has-text-danger">
+                        <IconText icon="gg-trash">Delete selected</IconText>
+                    </a>
+                </div>
+                <div slot="row" class="columns is-gapless" let:row>
+                    {row.name}
+                </div>
+            </List>
         </div>
-        <button
-            class="button is-light ml-1"
-            on:click={() => showModal({ name: "", description: "" })}
-        >
-            <i class="gg-math-plus" />
-        </button>
-
-        <div class="ml-auto">
-            {#if selectedAccount && selectedAccount.balance}
-                <span class="header-money-tag mr-2"
-                    ><Money value={selectedAccount.balance} /></span
-                >
-            {/if}
-            <div class="dropdown is-right">
-                <div class="dropdown-trigger">
-                    <button class="button is-light" aria-haspopup="true">
-                        <i class="gg-more-vertical-alt" />
-                    </button>
+        <div class="column">
+            <List title="Categories" list={accounts} class="column">
+                <div slot="actionMenu" class="dropdown-content">
+                    <a class="dropdown-item">
+                        <IconText icon="gg-math-plus">Add new</IconText>
+                    </a>
+                    <hr class="dropdown-divider" />
+                    <a class="dropdown-item has-text-danger">
+                        <IconText icon="gg-trash">Delete selected</IconText>
+                    </a>
                 </div>
-                <div class="dropdown-menu" role="menu">
-                    <div class="dropdown-content">
-                        <a
-                            href="#"
-                            class="dropdown-item"
-                            data-modal="ModalImport" aria-haspopup="true">Import</a
-                        >
-                        <hr class="dropdown-divider" />
-                        <a
-                            href="#"
-                            class="dropdown-item"
-                            class:is-disable={!selectedAccount}
-                            on:click={() => showModal(selectedAccount)}
-                            >Edit account</a
-                        >
-                        <a
-                            href="#"
-                            class="dropdown-item has-text-danger"
-                            class:is-disable={!selectedAccount}
-                            on:click={confirmDelete}>Delete account</a
-                        >
-                    </div>
+                <div slot="row" class="columns is-gapless" let:row>
+                    {row.name}
                 </div>
-            </div>
+            </List>
         </div>
     </div>
 
-    <Transactions {selectedAccount} />
+    <List title="Transactions" list={transactions}>
+        <div slot="actionMenu" class="dropdown-content">
+            <a class="dropdown-item">
+                <IconText icon="gg-software-upload">Import</IconText>
+            </a>
+            <hr class="dropdown-divider" />
+            <a class="dropdown-item">
+                <IconText icon="gg-tag">Set category</IconText>
+            </a>
+        </div>
+        <div slot="row" class="columns is-gapless" let:row>
+            {row.name}
+        </div>
+    </List>
 </div>
 
 <ModalImport accountId={selectedAccountId} />
 <ModalAccount currentAccount={modalData} />
-
-<style scoped>
-    .accountancy-menu .header-money-tag {
-        font-weight: lighter;
-        font-size: 1.6rem;
-    }
-</style>

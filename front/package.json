@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@sveltejs/adapter-static": "^2.0.1",
-    "bulma": "^0.9.4",
     "css.gg": "^2.0.0",
+    "bulma": "^0.9.4",
     "sass": "^1.58.1"
   }
 }
