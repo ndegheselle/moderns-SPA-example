@@ -1,6 +1,6 @@
 <script>
     import { alerts } from "@global/dialogs.js";
-    import modals from "@global/modals.js";
+    import { popup } from "@global/popups.js";
     import { importFile } from "@lib/accountancy/api.js";
 
     let files;
@@ -13,7 +13,7 @@
     async function sendImport()
     {
         let result = await importFile(files[0], {accountId: accountId, bank: bank});
-        modals.close("ModalImport");
+        popup.close("ModalImport");
 
         if (result.newTransactionsCount)
             alerts.success(`${transactionsImportedCount} new transactions imported.`);

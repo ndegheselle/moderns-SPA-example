@@ -1,3 +1,5 @@
+import { contextMenu as contextMenuStore } from "./store.js";
+
 // Functions to show and close
 const targets = [
     {
@@ -18,7 +20,6 @@ const targets = [
     {
         selector: '.dropdown-trigger [aria-haspopup="true"]',
         callback: function (element) {
-            closeAll(".dropdown");
             const $target = element.closest('.dropdown');
             show($target);
         }
@@ -43,13 +44,16 @@ function closeAll(selector) {
 }
 
 export function init() {
+
     document.addEventListener("click", function (e) {
         for (const target of targets) {
             let element = e.target.closest(target.selector);
             if (element) return target.callback(element);
         }
 
-        closeAll('.dropdown');
+        closeAll('.dropdown, .context-menu');
+        if (contextMenuStore.visible)
+            contextMenuStore.close();
     });
 
     // Add a keyboard event to close all modals
@@ -58,17 +62,33 @@ export function init() {
 
         // Escape key
         if (e.code === 'Escape') {
-            closeAll('.modal');
-            closeAll('.dropdown');
+            closeAll('.modal, .dropdown, .context-menu');
         }
     });
 }
 
-export default {
+export const popup = {
     show(elementId) {
         show(document.getElementById(elementId));
     },
     close(elementId) {
         close(document.getElementById(elementId));
+    }
+};
+
+export const contextMenu = {
+    show(position, items) {
+        contextMenuStore.update(c => {
+            c.visible = true;
+            c.position = position;
+            c.items = items;
+            return c;
+        });
+    },
+    close() {
+        contextMenuStore.update(c => {
+            c.visible = false;
+            return c;
+        });
     }
 }

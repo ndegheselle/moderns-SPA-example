@@ -6,6 +6,7 @@
 
     export let list = [];
     export let title = "";
+    export let actionMenu = [];
     export let options = {
         hasMultiselect: false,
     };
@@ -13,7 +14,7 @@
 
 <div class="panel">
 
-    {#if $$slots.actionMenu}
+    {#if actionMenu && actionMenu.length}
     <div class="dropdown is-right">
         <div class="dropdown-trigger">
             <button class="button is-ghost" aria-haspopup="true">
@@ -21,7 +22,16 @@
             </button>
         </div>
         <div class="dropdown-menu" role="menu">
-            <slot name="actionMenu"/>
+            {#each actionMenu as menu}
+            <div class="dropdown-content">
+                <a class="dropdown-item">
+                    <span class="icon-text">
+                        <span class="icon"><i class="{menu.icon}"/></span>
+                        {menu.title}
+                    </span>
+                </a>
+            </div>
+            {/each}
         </div>
     </div>
     {/if}
@@ -52,5 +62,9 @@
     .dropdown {
         float: right;
         margin: 0.45rem;
+    }
+
+    .icon-text .icon {
+        margin-right: 0.4rem;
     }
 </style>
