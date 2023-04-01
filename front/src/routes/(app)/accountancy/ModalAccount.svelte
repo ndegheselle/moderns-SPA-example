@@ -27,7 +27,12 @@
         currentAccount = null;
     }
 
-    export let currentAccount = null;
+    let currentAccount = null;
+    export const modal = {
+        show(account = null) {
+            currentAccount = account;
+        }
+    };
 </script>
 
 <div class="modal" class:is-active={!!currentAccount} on:closing={handleClosing}>

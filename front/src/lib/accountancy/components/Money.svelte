@@ -3,5 +3,5 @@
 </script>
 
 <span class="{$$props.class}" class:has-text-info="{value >= 0}">
-    {value.toLocaleString()} €
+    {value?.toLocaleString() || 0} €
 </span>

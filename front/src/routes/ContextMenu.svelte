@@ -16,7 +16,19 @@
                     {#if item == "divider"}
                         <hr class="dropdown-divider" />
                     {:else}
-                        <a class="dropdown-item"> {item.title}</a>
+                        <a
+                            class="dropdown-item {item.style || ''}"
+                            on:click={item.action}
+                        >
+                            <span class="icon-text">
+                                {#if item.icon}
+                                    <span class="icon"
+                                        ><i class={item.icon} /></span
+                                    >
+                                {/if}
+                                {item.title}
+                            </span>
+                        </a>
                     {/if}
                 {/each}
             </div>

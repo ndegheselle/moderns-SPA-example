@@ -1,76 +1,86 @@
 <script>
-    function selectRow(row) {
+    import { context } from "@global/contextMenu.js";
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+    
+    function selectRow(index) {
         if (!options.hasMultiselect) list.forEach((r) => (r.selected = false));
-        row.selected = true;
+        list[index].selected = true;
+
+        dispatch('rowSelectedChanged', list[index]);
     }
 
-    function showContextMenu(event)
-    {
-        
+    function showContextMenu(event, index) {
+        if (!contextMenu) return;
+        selectRow(index);
+        context.show({ x: event.pageX, y: event.pageY }, contextMenu);
         event.preventDefault();
     }
-    
+
     export let list = [];
     export let title = "";
-    export let actionMenu = [];
+    export let actionsMenu = [];
+    export let contextMenu = null;
     export let options = {
         hasMultiselect: false,
     };
 </script>
 
-<div class="panel">
-
-    {#if actionMenu && actionMenu.length}
-    <div class="dropdown is-right">
-        <div class="dropdown-trigger">
-            <button class="button is-ghost" aria-haspopup="true">
-                <i class="gg-more-vertical-alt" />
-            </button>
-        </div>
-        <div class="dropdown-menu" role="menu">
-            {#each actionMenu as menu}
-            <div class="dropdown-content">
-                <a class="dropdown-item" on:contextmenu={showContextMenu}>
-                    <span class="icon-text">
-                        <span class="icon"><i class="{menu.icon}"/></span>
-                        {menu.title}
-                    </span>
-                </a>
+<div class="panel m-0">
+    {#if actionsMenu && actionsMenu.length}
+        <div class="dropdown is-right">
+            <div class="dropdown-trigger">
+                <button class="button is-ghost" aria-haspopup="true">
+                    <i class="gg-more-vertical-alt" />
+                </button>
             </div>
-            {/each}
+            <div class="dropdown-menu" role="menu">
+                {#each actionsMenu as menu}
+                    <div class="dropdown-content">
+                        <a class="dropdown-item" on:click={menu.action}>
+                            <span class="icon-text">
+                                <span class="icon"><i class={menu.icon} /></span
+                                >
+                                {menu.title}
+                            </span>
+                        </a>
+                    </div>
+                {/each}
+            </div>
         </div>
-    </div>
     {/if}
 
     {#if title}
         <div class="panel-heading">{title}</div>
     {/if}
 
-    {#each list as row}
-    <a
-        class:is-active={options.hasMultiselect && row.selected}
-        class="panel-block"
-        on:click={() => selectRow(row)}
-    >
-        {#if options.hasMultiselect}
-            <input
-                type="checkbox"
-                bind:checked={row.selected}
-                on:click|stopPropagation
-            />
-        {/if}
-        <slot name="row" {row} />
-    </a>
-{/each}
+    {#each list as row, index}
+        <a
+            class:is-active={row.selected}
+            class="panel-block row"
+            on:contextmenu={(event) => showContextMenu(event, index)}
+            on:click={() => selectRow(index)}
+        >
+            {#if options.hasMultiselect}
+                <input
+                    type="checkbox"
+                    bind:checked={row.selected}
+                    on:click|stopPropagation={() =>dispatch('selected', row)}
+                />
+            {/if}
+            <slot name="row" {row} />
+        </a>
+    {/each}
 </div>
 
 <style scoped>
+    .panel-block.is-active {
+        background-color: hsl(0, 0%, 96%);
+    }
+
     .dropdown {
         float: right;
         margin: 0.45rem;
-    }
-
-    .icon-text .icon {
-        margin-right: 0.4rem;
     }
 </style>
