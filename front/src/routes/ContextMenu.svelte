@@ -3,16 +3,29 @@
 </script>
 
 {#if $contextMenu.visible}
-    <div class="dropdown-menu" id="dropdown-menu" role="menu">
-        <div class="dropdown-content">
-            <a href="#" class="dropdown-item"> Dropdown item </a>
-            <a class="dropdown-item"> Other dropdown item </a>
-            <a href="#" class="dropdown-item is-active">
-                Active dropdown item
-            </a>
-            <a href="#" class="dropdown-item"> Other dropdown item </a>
-            <hr class="dropdown-divider" />
-            <a href="#" class="dropdown-item"> With a divider </a>
+    <div
+        class="context-menu dropdown"
+        class:is-active={$contextMenu.visible}
+        on:closing={($contextMenu.visible = false)}
+        style="left: {$contextMenu.position.x}px;top: {$contextMenu.position
+            .y}px;"
+    >
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+                {#each $contextMenu.items as item}
+                    {#if item == "divider"}
+                        <hr class="dropdown-divider" />
+                    {:else}
+                        <a class="dropdown-item"> {item.title}</a>
+                    {/if}
+                {/each}
+            </div>
         </div>
     </div>
 {/if}
+
+<style>
+    .context-menu {
+        position: absolute;
+    }
+</style>

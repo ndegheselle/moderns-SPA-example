@@ -4,6 +4,12 @@
         row.selected = true;
     }
 
+    function showContextMenu(event)
+    {
+        
+        event.preventDefault();
+    }
+    
     export let list = [];
     export let title = "";
     export let actionMenu = [];
@@ -24,7 +30,7 @@
         <div class="dropdown-menu" role="menu">
             {#each actionMenu as menu}
             <div class="dropdown-content">
-                <a class="dropdown-item">
+                <a class="dropdown-item" on:contextmenu={showContextMenu}>
                     <span class="icon-text">
                         <span class="icon"><i class="{menu.icon}"/></span>
                         {menu.title}

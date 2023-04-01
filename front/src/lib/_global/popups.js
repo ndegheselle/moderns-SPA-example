@@ -1,17 +1,7 @@
-import { contextMenu as contextMenuStore } from "./store.js";
-
 // Functions to show and close
 const targets = [
     {
-        selector: '[data-modal][aria-haspopup="true"]',
-        callback: function (element) {
-            const modal = element.dataset.modal;
-            const $target = document.getElementById(modal);
-            show($target);
-        }
-    },
-    {
-        selector: '.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button[data-dismiss="modal"]',
+        selector: '.modal-background, .modal-card-head .delete[aria-label="close"], .modal .button[data-dismiss="modal"]',
         callback: function (element) {
             const $target = element.closest('.modal');
             close($target);
@@ -26,20 +16,24 @@ const targets = [
     }
 ];
 
+function sendClosing($el)
+{
+    if (!$el.classList.contains('is-active')) return;
+    $el.dispatchEvent(new Event("closing"));
+}
+
 function show($el) {
     $el.classList.add('is-active');
 }
-
 function close($el) {
-    if (!$el.classList.contains('is-active')) return;
-
-    $el.dispatchEvent(new Event("closing"));
+    sendClosing($el);
+    // Most popups will handle removing 'is-active' on their own (not dropdowns)
     $el.classList.remove('is-active');
 }
 
 function closeAll(selector) {
-    (document.querySelectorAll(selector) || []).forEach(($modal) => {
-        close($modal);
+    (document.querySelectorAll(selector) || []).forEach(($element) => {
+        close($element);
     });
 }
 
@@ -51,9 +45,8 @@ export function init() {
             if (element) return target.callback(element);
         }
 
-        closeAll('.dropdown, .context-menu');
-        if (contextMenuStore.visible)
-            contextMenuStore.close();
+        // Close all opened dropdown (including context menu)
+        closeAll('.dropdown.is-active');
     });
 
     // Add a keyboard event to close all modals
@@ -62,33 +55,8 @@ export function init() {
 
         // Escape key
         if (e.code === 'Escape') {
-            closeAll('.modal, .dropdown, .context-menu');
+            closeAll('.dropdown.is-active');
+            sendClosingAll('.context-menu.is-active, .modal.is-active');
         }
     });
-}
-
-export const popup = {
-    show(elementId) {
-        show(document.getElementById(elementId));
-    },
-    close(elementId) {
-        close(document.getElementById(elementId));
-    }
-};
-
-export const contextMenu = {
-    show(position, items) {
-        contextMenuStore.update(c => {
-            c.visible = true;
-            c.position = position;
-            c.items = items;
-            return c;
-        });
-    },
-    close() {
-        contextMenuStore.update(c => {
-            c.visible = false;
-            return c;
-        });
-    }
 }

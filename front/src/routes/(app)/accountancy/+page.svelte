@@ -1,7 +1,8 @@
 <script>
     import { onMount } from "svelte";
 
-    import { confirm } from "@global/dialogs.js";
+    import { confirm, alerts } from "@global/dialogs.js";
+    import { context } from "@global/contextMenu.js";
     import {
         getAccounts,
         deleteAccount,
@@ -69,7 +70,16 @@
         accounts = await getAccounts();
         selectedAccountId = accounts[0]?.id;
     });
+
+    let modal = {
+        importId: null
+    }
 </script>
+
+<button on:click={() => modal.importId = true}>Test modal</button>
+<button on:click={()=> confirm.show("test?")}>Test confirm</button>
+<button on:click={()=> alerts.info("test")}>Test alert</button>
+<span on:contextmenu|preventDefault={(e)=> context.show({x: e.pageX, y: e.pageY}, [{title: "test"}, "divider"])}>Test context</span>
 
 <div class="container">
     <div class="columns">
@@ -108,5 +118,5 @@
     </List>
 </div>
 
-<ModalImport accountId={selectedAccountId} />
+<ModalImport accountId={modal.importId} />
 <ModalAccount currentAccount={modalData} />
