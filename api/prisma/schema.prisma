@@ -37,7 +37,7 @@ model Transaction {
   orderNumber   Int
   description   String
   value         Float
-  categoryId    String @db.ObjectId
+  categoryId    String? @db.ObjectId
 
   category      Category?   @relation(fields: [categoryId], references: [id])
   account       Account     @relation(fields: [accountId], references: [id])

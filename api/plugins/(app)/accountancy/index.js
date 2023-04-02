@@ -32,7 +32,7 @@ async function updateAccount(req, reply) {
     return reply.status(200).send(account);
 }
 
-async function updateTransactionsType(req, reply) {
+async function updateTransactions(req, reply) {
     const updated = req.body;
 
     if (!Array.isArray(updated))
@@ -40,7 +40,7 @@ async function updateTransactionsType(req, reply) {
 
     await transactionsRepo.updateAll(updated);
 
-    return reply.status(200).send({ "udatedTransactionsCount": transactions.length });
+    return reply.status(200).send({ count: transactions.count });
 }
 
 async function importAccount(req, reply) {
@@ -54,9 +54,10 @@ async function importAccount(req, reply) {
     let { balance, dateMin, dateMax, transactions } = await importFile(file, bank);
 
     let newTransactions = await transactionsRepo.creates(accountId, dateMin, dateMax, transactions);
-    let account = await accountsRepo.updateAccount(accountId, { balance });
+    let account = await accountsRepo.update(accountId, { balance });
 
-    return reply.status(200).send({ "newTransactionsCount": newTransactions.length });
+    console.log(newTransactions.count);
+    return reply.status(200).send({ count: newTransactions.count });
 }
 
 export default async function (app, opts) {
@@ -66,7 +67,7 @@ export default async function (app, opts) {
     app.put("/accounts/:accountId", updateAccount);
 
     app.get("/accounts/:accountId/transactions", getTransactions);
-    app.put("/accounts/:accountId/transactions", updateTransactionsType);
+    app.put("/accounts/:accountId/transactions", updateTransactions);
 
     app.post("/accounts/:accountId/import", importAccount);
 };

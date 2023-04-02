@@ -4,10 +4,10 @@
     import { getAccounts, deleteAccount } from "@lib/accountancy/api";
     import { accounts, selectedAccount } from "@lib/accountancy/store";
     import Money from "@lib/accountancy/components/Money.svelte";
+    import ModalAccount from "@lib/accountancy/components/ModalAccount.svelte";
 
     import { confirm } from "@global/dialogs.js";
 
-    import ModalAccount from "./ModalAccount.svelte";
     import List from "@components/List.svelte";
 
     let modal = null;
@@ -68,7 +68,7 @@
     ]}
     on:rowSelectedChanged={handleAccountSelected}
 >
-    <div slot="row" class="columns is-gapless account-row" class:is-selected={row.selected} let:row>
+    <div slot="row" class="flex-container row" class:is-selected={row.selected} let:row>
         <div>
             <b class="name">{row.name}</b>
             <span class="description has-text-grey">{row.description}</span>
@@ -79,22 +79,18 @@
     </div>
 </List>
 
-<ModalAccount bind:modal />
+<ModalAccount bind:modal={modal} />
 
 <style>
-    .account-row {
-        width: 100%;
-        display: flex;
-        align-items: center;
-    }
-    .account-row .name, .account-row .balance  {
+
+    .name, .balance  {
         transition: 0.3s;
     }
-    .account-row .description {
+    .description {
         display: block;
         line-height: 0.8;
     }
-    .account-row.is-selected .name, .account-row.is-selected .balance  {
+    .row.is-selected .name, .row.is-selected .balance  {
         font-size: 1.5rem;
     }
 </style>

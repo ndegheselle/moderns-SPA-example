@@ -1,6 +1,9 @@
 <script>
     import { alerts } from "@global/dialogs.js";
     import { importFile } from "@lib/accountancy/api.js";
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
 
     let files;
     let bank = "labanquepostale";
@@ -12,23 +15,29 @@
     async function sendImport()
     {
         let result = await importFile(files[0], {accountId: accountId, bank: bank});
-        close();
+        dispatch('transactionsImported', result.count);
+        handleClosing();
 
-        if (result.newTransactionsCount)
-            alerts.success(`${transactionsImportedCount} new transactions imported.`);
+        if (result.count)
+            alerts.success(`${result.count} new transactions imported.`);
         else
             alerts.success(`No new transaction imported.`);
     }
 
-    function close()
+    function handleClosing()
     {
         accountId = null;
     }
 
     export let accountId = null;
+    export const modal = {
+        show(_accountId = null) {
+            accountId = _accountId;
+        }
+    };
 </script>
 
-<div class="modal" class:is-active={!!accountId} on:closing={close}>
+<div class="modal" class:is-active={!!accountId} on:closing={handleClosing}>
     <div class="modal-background" />
     <div class="modal-card">
         <header class="modal-card-head">
