@@ -37,7 +37,19 @@ model Transaction {
   orderNumber   Int
   description   String
   value         Float
-  category      String?
+  categoryId    String @db.ObjectId
 
-  account       Account @relation(fields: [accountId], references: [id])
+  category      Category?   @relation(fields: [categoryId], references: [id])
+  account       Account     @relation(fields: [accountId], references: [id])
+}
+
+model Category {
+  @@map("accountany_categories")
+
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  color         String
+  icon          String?
+
+  transactions  Transaction[]
 }

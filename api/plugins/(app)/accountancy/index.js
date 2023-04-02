@@ -2,28 +2,24 @@ import accountsRepo from "#lib/accountancy/repositories/accountsRepo.js";
 import transactionsRepo from "#lib/accountancy/repositories/transactionsRepo.js";
 import { importFile } from "#lib/accountancy/import.js";
 
-async function create(req, reply)
-{
+async function create(req, reply) {
     const newAccount = req.body;
     const account = await accountsRepo.create(newAccount);
     return reply.status(200).send(account);
 }
 
-async function getAccounts(req, reply)
-{
+async function getAccounts(req, reply) {
     const accounts = await accountsRepo.getAll();
     return reply.status(200).send(accounts);
 }
 
-async function deleteAccount(req, reply)
-{
+async function deleteAccount(req, reply) {
     const { accountId } = req.params;
     await accountsRepo.deleteById(accountId);
-    return reply.status(200).send({message: "Successfully deleted."});
+    return reply.status(200).send({ message: "Successfully deleted." });
 }
 
-async function getTransactions(req, reply)
-{
+async function getTransactions(req, reply) {
     const { accountId } = req.params;
     const transactions = await transactionsRepo.getByAccountId(accountId);
     return reply.status(200).send(transactions);
@@ -32,24 +28,22 @@ async function getTransactions(req, reply)
 async function updateAccount(req, reply) {
     const { accountId } = req.params;
     const updated = req.body;
-    const account = await accountsRepo.updateAccount(accountId, updated);
+    const account = await accountsRepo.update(accountId, updated);
     return reply.status(200).send(account);
 }
 
-async function updateTransactionsType(req, reply)
-{
+async function updateTransactionsType(req, reply) {
     const updated = req.body;
 
     if (!Array.isArray(updated))
         updated = [updated]
 
-    // const transactions = await accountsRepo.updateAccount(accountId, updated);
+    await transactionsRepo.updateAll(updated);
 
-    return reply.status(200).send({"udatedTransactionsCount": transactions.length});
+    return reply.status(200).send({ "udatedTransactionsCount": transactions.length });
 }
 
-async function importAccount(req, reply)
-{
+async function importAccount(req, reply) {
     const { accountId } = req.params;
     const { bank } = req.query;
     const file = await req.file();
@@ -62,15 +56,15 @@ async function importAccount(req, reply)
     let newTransactions = await transactionsRepo.creates(accountId, dateMin, dateMax, transactions);
     let account = await accountsRepo.updateAccount(accountId, { balance });
 
-    return reply.status(200).send({"newTransactionsCount": newTransactions.length});
+    return reply.status(200).send({ "newTransactionsCount": newTransactions.length });
 }
 
-export default async function(app, opts) {
+export default async function (app, opts) {
     app.post("/accounts", create);
     app.get("/accounts", getAccounts);
     app.delete("/accounts/:accountId", deleteAccount);
     app.put("/accounts/:accountId", updateAccount);
-    
+
     app.get("/accounts/:accountId/transactions", getTransactions);
     app.put("/accounts/:accountId/transactions", updateTransactionsType);
 

@@ -1,15 +1,13 @@
 import { fetchApi } from "@global/api/base.js";
 
-export function createAccount(account)
-{
+export function createAccount(account) {
     return fetchApi(`/accountancy/accounts`, {
         method: "post",
         body: account
     });
 }
 
-export function getAccounts()
-{
+export function getAccounts() {
     return fetchApi(`/accountancy/accounts`);
 }
 
@@ -18,21 +16,22 @@ export function getAccount(id) {
 }
 
 export function deleteAccount(id) {
-    return fetchApi(`/accountancy/accounts/${id}`, {method: "delete"});
+    return fetchApi(`/accountancy/accounts/${id}`, { method: "delete" });
 }
 
-export function updateAccount(account)
-{
-    return fetchApi(`/accountancy/accounts/${account.id}`, {method: "put", body: account});
+export function updateAccount(account) {
+    return fetchApi(`/accountancy/accounts/${account.id}`, { method: "put", body: account });
 }
 
-export function getTransactions(accountId)
-{
+export function getTransactions(accountId) {
     return fetchApi(`/accountancy/accounts/${accountId}/transactions`);
 }
 
-export function importFile(file, options)
-{
+export function updateTransaction(accountId, transactions) {
+    return fetchApi(`/accountancy/accounts/${accountId}/transactions`, { method: "put", body: transactions });
+}
+
+export function importFile(file, options) {
     let data = new FormData();
     data.append('file', file);
 

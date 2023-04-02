@@ -1,9 +1,18 @@
 <script>
-    import { transactions } from "@lib/accountancy/store";
+    import { transactions, selectedAccount } from "@lib/accountancy/store";
+    import { importFile, getTransactions } from "@lib/accountancy/api";
     import List from "@components/List.svelte";
 
     function importTransactions() {}
     function setTransactionsType() {}
+
+    function onSelectedAccountChange(account)
+    {
+        if (!account) return;
+        $transactions = getTransactions(account.id);
+    }
+
+    $: onSelectedAccountChange($selectedAccount)
 </script>
 
 <List

@@ -68,5 +68,21 @@ export default {
                 { orderNumber: 'desc' }
             ]
         });
+    },
+    updateAll: async function (transactions) {
+        const updatedTransactions = [];
+        for(let transaction in transactions) {
+            let updatedTransaction = await prisma.account.update({
+                where: {
+                    id: transaction.id,
+                },
+                data: {
+                    categoryId: transaction.categoryId
+                },
+            });
+            updatedTransactions.push(updatedTransaction);
+        }
+
+        return updatedTransactions;
     }
 };
