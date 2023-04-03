@@ -33,7 +33,8 @@
 
     function handleAccountSelected(event)
     {
-        $selectedAccount = event.detail;
+        if (event.detail.id != $selectedAccount?.id)
+            $selectedAccount = event.detail;
     }
 
     function selectFirst()

@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export default {
+    // TODO : should add a system that show what transactions will be imported first
     creates: async function (accountId, dateMin, dateMax, transactionsList) {
 
         const transacNumberByDate = {};
@@ -29,6 +30,10 @@ export default {
             ],
         });
 
+        // XXX : is it possible that a bank add transaction in the past ?
+        // If transactions are too old we don't import it
+        if (transactionsList[0].date <= lastTransaction.date) return {count: 0};
+
         // Don't import the transactions that are already present
         if (lastTransaction) {
             lastTransaction.orderNumber += 1;
@@ -43,10 +48,10 @@ export default {
                     break;
                 }
 
-                // Safe guard / optimisation since bank can change transactions names
-                if (lastTransaction.date < transactionsList[i].date) {
-                    console.log("Slice index : ", i);
-                    transactionsList = transactionsList.slice(0, i);
+                // Safe guard / optimisation since bank can change transactions names between two imports
+                if (transactionsList[i].date > lastTransaction.date) {
+                    console.log(transactionsList[i]);
+                    transactionsList = transactionsList.slice(0, i); 
                     break;
                 }
                 // Update orderNumber for new transactions the same day

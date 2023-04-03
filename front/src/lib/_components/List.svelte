@@ -27,7 +27,7 @@
     };
 </script>
 
-<div class="panel m-0">
+<div class="panel m-0 is-fullheight">
     {#if actionsMenu && actionsMenu.length}
         <div class="dropdown is-right">
             <div class="dropdown-trigger">

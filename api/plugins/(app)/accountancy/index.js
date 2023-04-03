@@ -56,7 +56,6 @@ async function importAccount(req, reply) {
     let newTransactions = await transactionsRepo.creates(accountId, dateMin, dateMax, transactions);
     let account = await accountsRepo.update(accountId, { balance });
 
-    console.log(newTransactions.count);
     return reply.status(200).send({ count: newTransactions.count });
 }
 

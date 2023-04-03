@@ -5,14 +5,16 @@
 </script>
 
 <div class="container">
-    <div class="columns is-variable is-1 m-0">
-        <div class="column">
+    <div class="columns m-0">
+        <div class="column p-1">
             <Accounts />
         </div>
-        <div class="column">
+        <div class="column p-1">
             <Categories />
         </div>
     </div>
 
-    <Transactions />
+    <div class="p-1">
+        <Transactions />
+    </div>
 </div>

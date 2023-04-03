@@ -17,7 +17,6 @@
     {
         if (!account) return;
         $transactions = await getTransactions(account.id);
-        console.log($transactions);
     }
 
     async function handleTransactionsChanged(count) {
@@ -44,6 +43,9 @@
             action: setTransactionsType,
         },
     ]}
+    options={{
+        "hasMultiselect": true
+    }}
 >
     <div slot="row" class="flex-container row" let:row>
         <span class="has-text-grey">{row.description}</span>
