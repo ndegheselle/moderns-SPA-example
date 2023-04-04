@@ -30,10 +30,10 @@ export default {
 
         const transac = await prisma.$transaction([deleteTransactions, deleteAccount]);
     },
-    update: async function (accountId, account) {
+    update: async function (account) {
         return await prisma.account.update({
             where: {
-                id: accountId,
+                id: account.id,
             },
             data: {
                 name: account.name,
