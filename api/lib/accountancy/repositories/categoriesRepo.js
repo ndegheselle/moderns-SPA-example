@@ -27,10 +27,10 @@ export default {
 
         const transac = await prisma.$transaction([updateTransactions, deleteCategory]);
     },
-    update: async function (category) {
+    update: async function (id, category) {
         return await prisma.category.update({
             where: {
-                id: category.id,
+                id: id,
             },
             data: {
                 name: category.name,

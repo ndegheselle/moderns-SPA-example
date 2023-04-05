@@ -20,7 +20,7 @@ async function deleteAccount(req, reply) {
 async function updateAccount(req, reply) {
     const { accountId } = req.params;
     const updated = req.body;
-    const account = await accountsRepo.update(updated);
+    const account = await accountsRepo.update(accountId, updated);
     return reply.status(200).send(account);
 }
 
