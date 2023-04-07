@@ -18,7 +18,7 @@
                     {:else}
                         <a
                             class="dropdown-item {item.style || ''}"
-                            on:click={item.action}
+                            on:click={() => item.action($contextMenu.context) }
                         >
                             <span class="icon-text">
                                 {#if item.icon}

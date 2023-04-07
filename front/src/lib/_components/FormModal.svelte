@@ -10,10 +10,11 @@
     function send()
     {
         dispatch("finished", data);
+        data = null;
     }
 
-    export let form;
     export let title;
+    export let form;
 
     let data = null;
     export const modal = {
@@ -28,22 +29,22 @@
     <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">
-                {data.id ? "Update" : "Create"}
+                {data?.id ? "Update" : "Create"}
                 {title}
             </p>
             <button class="delete" aria-label="close" />
         </header>
         <section class="modal-card-body">
             {#if data}
-                {#each Object.entries(form) as [prop, def]}
+                {#each form as field}
                     <div class="field">
                         <label class="label">
-                            {def.name}
+                            {field}
                             <div class="control">
                                 <input
                                     class="input"
                                     type="text"
-                                    bind:value={data[prop]}
+                                    bind:value={data[field]}
                                 />
                             </div>
                         </label>
@@ -54,8 +55,14 @@
         <footer class="modal-card-foot is-justify-content-flex-end">
             <button class="button" data-dismiss="modal">Cancel</button>
             <button class="button is-success" on:click={send}
-                >{data.id ? "Update" : "Create"}</button
+                >{data?.id ? "Update" : "Create"}</button
             >
         </footer>
     </div>
 </div>
+
+<style scoped>
+    .field .label:first-letter {
+        text-transform: uppercase;
+    }
+</style>

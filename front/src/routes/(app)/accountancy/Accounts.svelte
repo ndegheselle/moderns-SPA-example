@@ -1,16 +1,25 @@
 <script>
     import { onMount } from "svelte";
 
-    import { getAccounts, deleteAccount } from "@lib/accountancy/api";
-    import { accounts, selectedAccount } from "@lib/accountancy/store";
-    import Money from "@lib/accountancy/components/Money.svelte";
-    import ModalAccount from "@lib/accountancy/components/ModalAccount.svelte";
-
+    import { updateOrCreate } from "@global/helpers.js";
     import { confirm } from "@global/dialogs.js";
-
+    import FormModal from "@components/FormModal.svelte";
     import List from "@components/List.svelte";
 
+    import {
+        getAccounts,
+        deleteAccount,
+        updateAccount,
+        createAccount,
+    } from "@lib/accountancy/api";
+    import { accounts, selectedAccount } from "@lib/accountancy/store";
+
+    import Money from "@lib/accountancy/components/Money.svelte";
+
     let modal = null;
+
+    let selectedRow = null;
+    $: handleAccountSelected(selectedRow);
 
     function confirmDelete() {
         confirm
@@ -31,16 +40,18 @@
             });
     }
 
-    function handleAccountSelected(event)
-    {
-        if (event.detail.id != $selectedAccount?.id)
-            $selectedAccount = event.detail;
+    function handleAccountSelected(_selectedRow) {
+        if (_selectedRow?.id != $selectedAccount?.id)
+            $selectedAccount = _selectedRow;
     }
 
-    function selectFirst()
-    {
+    function selectFirst() {
         $accounts[0].selected = true;
         $selectedAccount = $accounts[0];
+    }
+
+    async function sendAccount(event) {
+        updateOrCreate(event.detail, accounts, createAccount, updateAccount);
     }
 
     onMount(async () => {
@@ -61,15 +72,25 @@
     ]}
     contextMenu={[
         {
+            title: "Edit account",
+            action: (account) => modal.show(account),
+            icon: "gg-pen",
+        },
+        {
             title: "Delete account",
             action: confirmDelete,
             icon: "gg-trash",
             style: "has-text-danger",
         },
     ]}
-    on:rowSelectedChanged={handleAccountSelected}
+    bind:selected={selectedRow}
 >
-    <div slot="row" class="flex-container row" class:is-selected={row.selected} let:row>
+    <div
+        slot="row"
+        class="flex-container row"
+        class:is-selected={row.selected}
+        let:row
+    >
         <div>
             <b class="name">{row.name}</b>
             <span class="description has-text-grey">{row.description}</span>
@@ -80,18 +101,25 @@
     </div>
 </List>
 
-<ModalAccount bind:modal={modal} />
+<!-- Create / edit form -->
+<FormModal
+    title="account"
+    bind:modal
+    on:finished={sendAccount}
+    form={["name", "description"]}
+/>
 
 <style>
-
-    .name, .balance  {
+    .name,
+    .balance {
         transition: 0.3s;
     }
     .description {
         display: block;
         line-height: 0.8;
     }
-    .row.is-selected .name, .row.is-selected .balance  {
+    .row.is-selected .name,
+    .row.is-selected .balance {
         font-size: 1.5rem;
     }
 </style>

@@ -1,11 +1,12 @@
 import { contextMenu } from "./store.js";
 
 export const context = {
-    show(position, items) {
+    show(_position, _items, _context = null) {
         contextMenu.update((c) => {
             c.visible = true;
-            c.position = position;
-            c.items = items;
+            c.position = _position;
+            c.items = _items;
+            c.context = _context;
             return c;
         });
     }

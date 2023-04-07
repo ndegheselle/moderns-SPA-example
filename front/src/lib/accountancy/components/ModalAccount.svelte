@@ -2,10 +2,12 @@
     import { createAccount, updateAccount } from "@lib/accountancy/api.js";
     import { accounts } from "@lib/accountancy/store.js";
 
-    async function sendAccount() {
-        if (currentAccount.id) {
+    import FormModal from "@components/FormModal.svelte";
+
+    async function sendAccount(newAccount) {
+        if (newAccount.id) {
             // Update
-            const account = await updateAccount(currentAccount);
+            const account = await updateAccount(newAccount);
             accounts.update((accounts) => {
                 const index = accounts.findIndex((a) => a.id == account.id);
                 accounts[index] = account;
@@ -13,7 +15,7 @@
             });
         } else {
             // Create
-            const account = await createAccount(currentAccount);
+            const account = await createAccount(newAccount);
             accounts.update((a) => {
                 a.push(account);
                 return a;
@@ -28,12 +30,10 @@
     }
 
     let currentAccount = null;
-    export const modal = {
-        show(account = null) {
-            currentAccount = account;
-        }
-    };
+    export let modal;
 </script>
+
+<FormModal title="account" modal={modal} on:finished={sendAccount} />
 
 <div class="modal" class:is-active={!!currentAccount} on:closing={handleClosing}>
     <div class="modal-background" />

@@ -8,16 +8,18 @@
         if (!options.hasMultiselect) list.forEach((r) => (r.selected = false));
         list[index].selected = true;
 
-        dispatch('rowSelectedChanged', list[index]);
+        selected = list[index];
     }
 
     function showContextMenu(event, index) {
         if (!contextMenu) return;
         selectRow(index);
-        context.show({ x: event.pageX, y: event.pageY }, contextMenu);
+        
+        context.show({ x: event.pageX, y: event.pageY }, contextMenu, selected);
         event.preventDefault();
     }
 
+    export let selected = null;
     export let list = [];
     export let title = "";
     export let actionsMenu = [];

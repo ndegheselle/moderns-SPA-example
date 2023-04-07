@@ -18,5 +18,6 @@ export const confirmModal = writable({
 export const contextMenu = writable({
     visible: false,
     position: {x: 0, y: 0},
-    items: []
+    items: [],
+    context: null,
 });
