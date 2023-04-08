@@ -78,5 +78,46 @@
     title="category"
     bind:modal
     on:finished={sendCategory}
-    form={["name", "description"]}
-/>
+>
+<div slot="form">
+    <div class="field">
+        <label class="label">
+            Name
+            <div class="control">
+                <input class="input" type="text" bind:value={modal.data.name} />
+            </div>
+        </label>
+    </div>
+    <div class="field">
+        <label class="label">
+            Description
+            <div class="control">
+                <input class="input" type="text" bind:value={modal.data.description} />
+            </div>
+        </label>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-body">
+            <div class="field">
+                <label class="label">
+                    Color
+                    <div class="control">
+                        <input class="input" type="color" bind:value={modal.data.color} />
+                    </div>
+                </label>
+            </div>
+            <div class="field">
+                <label class="label">
+                    Icon
+                    <div class="control has-icons-left">
+                        <span class="icon is-small is-left">
+                            <i class={modal.data.icon}></i>
+                        </span>
+                        <input class="input" type="text" bind:value={modal.data.icon} />
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+</FormModal>

@@ -106,8 +106,26 @@
     title="account"
     bind:modal
     on:finished={sendAccount}
-    form={["name", "description"]}
-/>
+>
+    <div slot="form">
+        <div class="field">
+            <label class="label">
+                Name
+                <div class="control">
+                    <input class="input" type="text" bind:value={modal.data.name} />
+                </div>
+            </label>
+        </div>
+        <div class="field">
+            <label class="label">
+                Description
+                <div class="control">
+                    <input class="input" type="text" bind:value={modal.data.description} />
+                </div>
+            </label>
+        </div>
+    </div>
+</FormModal>
 
 <style>
     .name,
