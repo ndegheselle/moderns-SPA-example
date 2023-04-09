@@ -1,9 +1,9 @@
 <script>
     import { context } from "@global/contextMenu.js";
-	import { createEventDispatcher } from 'svelte';
+    import { createEventDispatcher } from "svelte";
 
-	const dispatch = createEventDispatcher();
-    
+    const dispatch = createEventDispatcher();
+
     function selectRow(index) {
         if (!options.hasMultiselect) list.forEach((r) => (r.selected = false));
         list[index].selected = true;
@@ -14,7 +14,7 @@
     function showContextMenu(event, index) {
         if (!contextMenu) return;
         selectRow(index);
-        
+
         context.show({ x: event.pageX, y: event.pageY }, contextMenu, selected);
         event.preventDefault();
     }
@@ -57,23 +57,28 @@
         <div class="panel-heading">{title}</div>
     {/if}
 
-    {#each list as row, index}
-        <a
-            class:is-active={row.selected}
-            class="panel-block row"
-            on:contextmenu={(event) => showContextMenu(event, index)}
-            on:click={() => selectRow(index)}
-        >
-            {#if options.hasMultiselect}
-                <input
-                    type="checkbox"
-                    bind:checked={row.selected}
-                    on:click|stopPropagation={() =>dispatch('selected', row)}
-                />
-            {/if}
-            <slot name="row" {row} />
-        </a>
-    {/each}
+    {#if !list || !list.length}
+        <div class="empty-list has-text-grey-light">No elements</div>
+    {:else}
+        {#each list as row, index}
+            <a
+                class:is-active={row.selected}
+                class="panel-block row"
+                on:contextmenu={(event) => showContextMenu(event, index)}
+                on:click={() => selectRow(index)}
+            >
+                {#if options.hasMultiselect}
+                    <input
+                        type="checkbox"
+                        bind:checked={row.selected}
+                        on:click|stopPropagation={() =>
+                            dispatch("selected", row)}
+                    />
+                {/if}
+                <slot name="row" {row} />
+            </a>
+        {/each}
+    {/if}
 </div>
 
 <style scoped>
@@ -84,5 +89,13 @@
     .dropdown {
         float: right;
         margin: 0.45rem;
+    }
+
+    .empty-list {
+        height: 70%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
     }
 </style>

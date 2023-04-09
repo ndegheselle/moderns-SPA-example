@@ -1,5 +1,11 @@
 import categoriesRepo from "#lib/accountancy/repositories/categoriesRepo.js";
 
+async function createCategory(req, reply) {
+    const newCategory = req.body;
+    const category = await categoriesRepo.create(newCategory);
+    return reply.status(200).send(category);
+}
+
 async function getCategories(req, reply) {
 
     const categories = await categoriesRepo.getAll();
@@ -21,6 +27,7 @@ async function deleteCategory(req, reply)
 }
 
 export default async function (app, opts) {
+    app.post("/transactions/categories", createCategory);
     app.get("/transactions/categories", getCategories);
     app.put("/transactions/categories/:categoryId", updateCategory);
     app.delete("/transactions/categories/:categoryId", deleteCategory);

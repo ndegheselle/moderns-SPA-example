@@ -14,7 +14,8 @@
         updateCategory,
         createCategory,
     } from "@lib/accountancy/api";
-    
+    import Category from "@lib/accountancy/components/Category.svelte";
+
     let selectedRow = null;
     let modal = null;
 
@@ -37,7 +38,12 @@
     }
 
     async function sendCategory(event) {
-        updateOrCreate(event.detail, categories.update, createCategory, updateCategory);
+        updateOrCreate(
+            event.detail,
+            categories,
+            createCategory,
+            updateCategory
+        );
     }
 
     onMount(async () => {
@@ -62,62 +68,62 @@
             icon: "gg-pen",
         },
         {
-            title: "Delete selected",
+            title: "Delete category",
             action: confirmDelete,
         },
     ]}
     bind:selected={selectedRow}
 >
-    <div slot="row" class="columns is-gapless" let:row>
-        {row.name}
+    <div slot="row" let:row>
+        <Category category={row}/>
     </div>
 </List>
 
 <!-- Create / edit form -->
-<FormModal
-    title="category"
-    bind:modal
-    on:finished={sendCategory}
->
-<div slot="form">
-    <div class="field">
-        <label class="label">
-            Name
-            <div class="control">
-                <input class="input" type="text" bind:value={modal.data.name} />
-            </div>
-        </label>
-    </div>
-    <div class="field">
-        <label class="label">
-            Description
-            <div class="control">
-                <input class="input" type="text" bind:value={modal.data.description} />
-            </div>
-        </label>
-    </div>
-    <div class="field is-horizontal">
-        <div class="field-body">
-            <div class="field">
-                <label class="label">
-                    Color
-                    <div class="control">
-                        <input class="input" type="color" bind:value={modal.data.color} />
-                    </div>
-                </label>
-            </div>
-            <div class="field">
-                <label class="label">
-                    Icon
-                    <div class="control has-icons-left">
-                        <span class="icon is-small is-left">
-                            <i class={modal.data.icon}></i>
-                        </span>
-                        <input class="input" type="text" bind:value={modal.data.icon} />
-                    </div>
-                </label>
+<FormModal title="category" bind:modal on:finished={sendCategory}>
+    <div slot="form">
+        <div class="field">
+            <label class="label">
+                Name
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        bind:value={modal.data.name}
+                    />
+                </div>
+            </label>
+        </div>
+        <div class="field is-horizontal">
+            <div class="field-body">
+                <div class="field">
+                    <label class="label">
+                        Color
+                        <div class="control">
+                            <input
+                                class="input"
+                                type="color"
+                                bind:value={modal.data.color}
+                            />
+                        </div>
+                    </label>
+                </div>
+                <div class="field">
+                    <label class="label">
+                        Icon
+                        <div class="control has-icons-left">
+                            <span class="icon is-small is-left">
+                                <i class={modal.data.icon} />
+                            </span>
+                            <input
+                                class="input"
+                                type="text"
+                                bind:value={modal.data.icon}
+                            />
+                        </div>
+                    </label>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </FormModal>

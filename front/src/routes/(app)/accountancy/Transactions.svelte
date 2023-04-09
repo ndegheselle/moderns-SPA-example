@@ -1,17 +1,33 @@
 <script>
-    import { transactions, selectedAccount } from "@lib/accountancy/store";
-    import { importFile, getTransactions } from "@lib/accountancy/api";
+    import { transactions, selectedAccount, updateTransactions } from "@lib/accountancy/store";
+    import { getTransactions } from "@lib/accountancy/api";
     import Money from "@lib/accountancy/components/Money.svelte";
     import ModalImport from "@lib/accountancy/components/ModalImport.svelte";
+    import ModalSelectCategory from "@lib/accountancy/components/ModalSelectCategory.svelte";
 
     import List from "@components/List.svelte";
 
-    let modal = null;
+    let modalImport = null;
+    let modalCategory = null;
+    let selectedTransactions = [];
 
     function importTransactions() {
-        modal.show($selectedAccount.id);
+        modalImport.show($selectedAccount.id);
     }
-    function setTransactionsType() {}
+    function setTransactionsType() {
+        modalCategory.show();
+    }
+
+    function onCategorySelected(event)
+    {
+        if (!event.detail) return;
+
+        for (let transac in selectedTransactions)
+        {
+            transac.categoryId = event.detail.id;
+        }
+        updateTransactions(selectedTransactions);
+    }
 
     async function handeSelectedAccountChange(account)
     {
@@ -39,13 +55,15 @@
     ]}
     contextMenu={[
         {
-            title: "Set selected type",
+            title: "Set category",
+            icon: "gg-tag",
             action: setTransactionsType,
         },
     ]}
     options={{
         "hasMultiselect": true
     }}
+    bind:selected={selectedTransactions}
 >
     <div slot="row" class="flex-container row" let:row>
         <span class="has-text-grey">{row.description}</span>
@@ -56,7 +74,8 @@
     </div>
 </List>
 
-<ModalImport bind:modal={modal} on:transactionsImported={handleTransactionsChanged}/>
+<ModalImport bind:modal={modalImport} on:transactionsImported={handleTransactionsChanged}/>
+<ModalSelectCategory bind:modal={modalCategory} on:selected={onCategorySelected}/> 
 
 <style>
     .row .date {
