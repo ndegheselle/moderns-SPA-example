@@ -3,6 +3,7 @@
     export let category;
 </script>
 
+{#if category}
 <span class="icon-text">
     <span class="icon">
         {#if category.icon}
@@ -14,15 +15,15 @@
             />
         {/if}
     </span>
-    {#if onlyIcon}
+    {#if !onlyIcon}
         {category.name}
     {/if}
 </span>
-
+{/if}
 <style>
     .category-color {
-        width: 0.4rem;
-        height: 0.4rem;
+        width: 1rem;
+        height: 1rem;
         border-radius: 50%;
     }
 </style>

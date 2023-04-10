@@ -14,9 +14,9 @@ async function updateTransactions(req, reply) {
     if (!Array.isArray(updated))
         updated = [updated]
 
-    await transactionsRepo.updateAll(updated);
-
-    return reply.status(200).send({ count: transactions.count });
+    const transactions = await transactionsRepo.updateAll(updated);
+    console.log(transactions);
+    return reply.status(200).send({ count: transactions.lenght });
 }
 
 async function importTransactions(req, reply) {

@@ -76,8 +76,8 @@ export default {
     },
     updateAll: async function (transactions) {
         const updatedTransactions = [];
-        for(let transaction in transactions) {
-            let updatedTransaction = await prisma.account.update({
+        for(let transaction of transactions) {
+            let updatedTransaction = await prisma.transaction.update({
                 where: {
                     id: transaction.id,
                 },

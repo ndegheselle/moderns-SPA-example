@@ -1,14 +1,16 @@
 <script>
     import { context } from "@global/contextMenu.js";
-    import { createEventDispatcher } from "svelte";
-
-    const dispatch = createEventDispatcher();
 
     function selectRow(index) {
         if (!options.hasMultiselect) list.forEach((r) => (r.selected = false));
-        list[index].selected = true;
+        
+        // XXX : if already selected and in multiselect unselect (handle unselect for unique ?)
+        list[index].selected = (options.hasMultiselect && list[index].selected) ? false : true ;
 
-        selected = list[index];
+        if (options.hasMultiselect)
+            selected = list.filter(e => e.selected);
+        else
+            selected = list[index];
     }
 
     function showContextMenu(event, index) {
@@ -67,14 +69,6 @@
                 on:contextmenu={(event) => showContextMenu(event, index)}
                 on:click={() => selectRow(index)}
             >
-                {#if options.hasMultiselect}
-                    <input
-                        type="checkbox"
-                        bind:checked={row.selected}
-                        on:click|stopPropagation={() =>
-                            dispatch("selected", row)}
-                    />
-                {/if}
                 <slot name="row" {row} />
             </a>
         {/each}

@@ -1,15 +1,21 @@
 <script>
-    import { transactions, selectedAccount, updateTransactions } from "@lib/accountancy/store";
-    import { getTransactions } from "@lib/accountancy/api";
+    import {
+        transactions,
+        categories,
+        selectedAccount,
+    } from "@lib/accountancy/store";
+    import { getTransactions, updateTransactions } from "@lib/accountancy/api";
     import Money from "@lib/accountancy/components/Money.svelte";
     import ModalImport from "@lib/accountancy/components/ModalImport.svelte";
     import ModalSelectCategory from "@lib/accountancy/components/ModalSelectCategory.svelte";
+    import Category from "@lib/accountancy/components/Category.svelte";
 
     import List from "@components/List.svelte";
 
     let modalImport = null;
     let modalCategory = null;
     let selectedTransactions = [];
+    let categoriesDico = {};
 
     function importTransactions() {
         modalImport.show($selectedAccount.id);
@@ -18,19 +24,23 @@
         modalCategory.show();
     }
 
-    function onCategorySelected(event)
-    {
+    function onCategorySelected(event) {
         if (!event.detail) return;
 
-        for (let transac in selectedTransactions)
-        {
-            transac.categoryId = event.detail.id;
-        }
-        updateTransactions(selectedTransactions);
+        transactions.update((_transactions) => {
+            for (let transac of selectedTransactions) {
+                transac.categoryId = event.detail.id;
+            }
+            return _transactions;
+        });
+        updateTransactions($selectedAccount.id, selectedTransactions);
     }
 
-    async function handeSelectedAccountChange(account)
-    {
+    function handleCategoriesChange(_categories) {
+        categoriesDico = Object.fromEntries(_categories.map((c) => [c.id, c]));
+    }
+
+    async function handeSelectedAccountChange(account) {
         if (!account) return;
         $transactions = await getTransactions(account.id);
     }
@@ -40,7 +50,8 @@
         $transactions = await getTransactions($selectedAccount.id);
     }
 
-    $: handeSelectedAccountChange($selectedAccount)
+    $: handleCategoriesChange($categories);
+    $: handeSelectedAccountChange($selectedAccount);
 </script>
 
 <List
@@ -61,23 +72,40 @@
         },
     ]}
     options={{
-        "hasMultiselect": true
+        hasMultiselect: true,
     }}
     bind:selected={selectedTransactions}
 >
-    <div slot="row" class="flex-container row" let:row>
-        <span class="has-text-grey">{row.description}</span>
+    <div
+        slot="row"
+        class="flex-container row"
+        class:is-selected={row.selected}
+        let:row
+    >
+        <Category category={categoriesDico[row.categoryId]} onlyIcon={true} />
+        <span class="has-text-grey description">{row.description}</span>
         <span class="balance ml-auto has-text-right">
             <Money value={row.value} />
-            <span class="date has-text-grey-light">{new Date(row.date).toLocaleDateString()}</span>
+            <span class="date has-text-grey-light"
+                >{new Date(row.date).toLocaleDateString()}</span
+            >
         </span>
     </div>
 </List>
 
-<ModalImport bind:modal={modalImport} on:transactionsImported={handleTransactionsChanged}/>
-<ModalSelectCategory bind:modal={modalCategory} on:selected={onCategorySelected}/> 
+<ModalImport
+    bind:modal={modalImport}
+    on:transactionsImported={handleTransactionsChanged}
+/>
+<ModalSelectCategory
+    bind:modal={modalCategory}
+    on:selected={onCategorySelected}
+/>
 
-<style>
+<style lang="scss">
+    .row.is-selected .description {
+        color: $grey-darker !important;
+    }
     .row .date {
         display: block;
     }

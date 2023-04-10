@@ -10,6 +10,7 @@ export default defineConfig({
     resolve: {
         alias: {
             // these are the aliases and paths to them
+            '@styles': path.resolve('./src/scss'),
             '@lib': path.resolve('./src/lib'),
             '@global': path.resolve('./src/lib/_global'),
             '@components': path.resolve('./src/lib/_components'),
@@ -20,6 +21,13 @@ export default defineConfig({
         port: 80,
         watch: {
             usePolling: true
+        }
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@use "@styles/colors.scss" as *;`
+            }
         }
     }
 });
