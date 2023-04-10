@@ -1,4 +1,5 @@
 <script>
+    import { accounts } from "@lib/accountancy/store.js";
     import { alerts } from "@global/dialogs.js";
     import { importFile } from "@lib/accountancy/api.js";
     import { createEventDispatcher } from 'svelte';
@@ -16,12 +17,18 @@
     {
         let result = await importFile(files[0], {accountId: accountId, bank: bank});
         dispatch('transactionsImported', result.count);
-        handleClosing();
 
-        if (result.count)
+        if (result.count) {
             alerts.success(`${result.count} new transactions imported.`);
+            accounts.update((_accounts) => {
+                _accounts.find(a => a.id == accountId).balance = result.balance;
+                return _accounts;
+            });
+        }
         else
             alerts.success(`No new transaction imported.`);
+        
+        handleClosing();
     }
 
     function handleClosing()

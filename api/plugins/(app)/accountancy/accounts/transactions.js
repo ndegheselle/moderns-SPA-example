@@ -15,7 +15,6 @@ async function updateTransactions(req, reply) {
         updated = [updated]
 
     const transactions = await transactionsRepo.updateAll(updated);
-    console.log(transactions);
     return reply.status(200).send({ count: transactions.lenght });
 }
 
@@ -30,9 +29,9 @@ async function importTransactions(req, reply) {
     let { balance, dateMin, dateMax, transactions } = await importFile(file, bank);
 
     let newTransactions = await transactionsRepo.creates(accountId, dateMin, dateMax, transactions);
-    let account = await accountsRepo.update({ id: accountId, balance });
+    let account = await accountsRepo.update(accountId, { balance: balance });
 
-    return reply.status(200).send({ count: newTransactions.count });
+    return reply.status(200).send({ count: newTransactions.count, balance: account.balance });
 }
 
 export default async function (app, opts) {

@@ -8,7 +8,7 @@ export default {
 
         const transacNumberByDate = {};
         // Reverse loop to keep orderNumber logical (oldest to newest)
-        for (let i = transactionsList.length -1; i >= 0; i--) {
+        for (let i = transactionsList.length - 1; i >= 0; i--) {
             let transaction = transactionsList[i];
 
             const dateString = transaction.date.toDateString();
@@ -22,6 +22,7 @@ export default {
 
         let lastTransaction = await prisma.transaction.findFirst({
             where: {
+                accountId: accountId,
                 date: { gte: dateMin }
             },
             orderBy: [
@@ -32,15 +33,16 @@ export default {
 
         // XXX : is it possible that a bank add transaction in the past ?
         // If transactions are too old we don't import it
-        if (transactionsList[0].date <= lastTransaction.date) return {count: 0};
+        if (transactionsList[0].date <= lastTransaction?.date) return { count: 0 };
 
         // Don't import the transactions that are already present
         if (lastTransaction) {
             lastTransaction.orderNumber += 1;
+            let indexSameDayLastTransaction = null;
             for (let i = transactionsList.length - 1; i >= 0; i--) {
-                
+
                 // Search last imported
-                if (transactionsList[i].date == lastTransaction.date &&
+                if (transactionsList[i].date.getTime() == lastTransaction.date.getTime() &&
                     transactionsList[i].description == lastTransaction.description &&
                     transactionsList[i].value == lastTransaction.value) {
 
@@ -48,19 +50,22 @@ export default {
                     break;
                 }
 
+                if (transactionsList[i].date.getTime() == lastTransaction.date.getTime())
+                {
+                    // Keep same day index so that we can resolve specific cases
+                    if (!indexSameDayLastTransaction) indexSameDayLastTransaction = i+1;
+
+                    transactionsList[i].orderNumber += lastTransaction.orderNumber;
+                }
+
                 // Safe guard / optimisation since bank can change transactions names between two imports
                 if (transactionsList[i].date > lastTransaction.date) {
-                    console.log(transactionsList[i]);
-                    transactionsList = transactionsList.slice(0, i); 
+                    transactionsList = transactionsList.slice(0, indexSameDayLastTransaction || i);
                     break;
-                }
-                // Update orderNumber for new transactions the same day
-                else if (lastTransaction.date == transactionsList[i].date) {
-                    transactionsList[i].orderNumber += lastTransaction.orderNumber;
                 }
             }
         }
-
+        
         return await prisma.transaction.createMany({
             data: transactionsList
         });
@@ -76,7 +81,7 @@ export default {
     },
     updateAll: async function (transactions) {
         const updatedTransactions = [];
-        for(let transaction of transactions) {
+        for (let transaction of transactions) {
             let updatedTransaction = await prisma.transaction.update({
                 where: {
                     id: transaction.id,
