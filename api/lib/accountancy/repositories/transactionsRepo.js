@@ -52,7 +52,7 @@ export default {
 
                 if (transactionsList[i].date.getTime() == lastTransaction.date.getTime())
                 {
-                    // Keep same day index so that we can resolve specific cases
+                    // Keep same day as last index so that we can resolve specific cases
                     if (!indexSameDayLastTransaction) indexSameDayLastTransaction = i+1;
 
                     transactionsList[i].orderNumber += lastTransaction.orderNumber;

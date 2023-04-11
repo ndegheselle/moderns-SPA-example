@@ -5,7 +5,9 @@ const prisma = new PrismaClient();
 
 export default {
     getAll: async function () {
-        return await prisma.category.findMany();
+        const result = await prisma.category.findMany();
+        let noneCategory = [{name: "None", id: null}];
+        return noneCategory.concat(result);
     },
     create: async function (category) {
         return await prisma.category.create({

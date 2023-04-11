@@ -2,20 +2,29 @@
     import { context } from "@global/contextMenu.js";
 
     function selectRow(index) {
+        let isSelected = list[index].selected;
         if (!options.hasMultiselect) list.forEach((r) => (r.selected = false));
-        
-        // XXX : if already selected and in multiselect unselect (handle unselect for unique ?)
-        list[index].selected = (options.hasMultiselect && list[index].selected) ? false : true ;
 
-        if (options.hasMultiselect)
-            selected = list.filter(e => e.selected);
+        // FIXME : can't select
+        // Can select if : is not already selected
+        if (options.hasMultiselect || options.canUnselect) {
+            list[index].selected = !isSelected;
+        }
         else
-            selected = list[index];
+        {
+            list[index].selected = true;
+        }
+
+        if (options.hasMultiselect) selected = list.filter((e) => e.selected);
+        else selected = list[index];
     }
 
     function showContextMenu(event, index) {
         if (!contextMenu) return;
         selectRow(index);
+
+        // XXX : for object added programatically no coming from database
+        if (!options.hasMultiselect && !selected.id) return;
 
         context.show({ x: event.pageX, y: event.pageY }, contextMenu, selected);
         event.preventDefault();
@@ -26,8 +35,10 @@
     export let title = "";
     export let actionsMenu = [];
     export let contextMenu = null;
+    // Options should have false by default otherwise it will not work (since you overide the object)
     export let options = {
         hasMultiselect: false,
+        canUnselect: false,
     };
 </script>
 
@@ -65,6 +76,8 @@
         {#each list as row, index}
             <a
                 class:is-active={row.selected}
+                class:has-background-link-light={row.selected}
+                class:has-text-grey={!row.id}
                 class="panel-block row"
                 on:contextmenu={(event) => showContextMenu(event, index)}
                 on:click={() => selectRow(index)}
@@ -75,11 +88,7 @@
     {/if}
 </div>
 
-<style scoped>
-    .panel-block.is-active {
-        background-color: hsl(0, 0%, 96%);
-    }
-
+<style>
     .dropdown {
         float: right;
         margin: 0.45rem;

@@ -25,8 +25,6 @@
     export const modal = {
         show() {
             show = true;
-            let noneCategory = [{name: "None", id: null}];
-            categoriesWithNone = noneCategory.concat($categories);
         }
     };
 </script>
