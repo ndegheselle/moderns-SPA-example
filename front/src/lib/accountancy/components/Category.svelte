@@ -3,12 +3,12 @@
     export let category;
 </script>
 
-{#if category}
+{#if category }
 <span class="icon-text">
     <span class="icon">
         {#if category.icon}
             <i class={category.icon} style="color: {category.color}" />
-        {:else}
+        {:else if category.color}
             <span
                 class="category-color"
                 style="background-color: {category.color}"

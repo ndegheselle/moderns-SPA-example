@@ -4,7 +4,12 @@ import { importFile } from "#lib/accountancy/import.js";
 
 async function getTransactions(req, reply) {
     const { accountId } = req.params;
-    const transactions = await transactionsRepo.getByAccountId(accountId);
+    let { dateFilterTo } = req.query;
+
+    if (dateFilterTo)
+        dateFilterTo = new Date(parseInt(dateFilterTo));
+
+    const transactions = await transactionsRepo.getByAccountId(accountId, dateFilterTo);
     return reply.status(200).send(transactions);
 }
 

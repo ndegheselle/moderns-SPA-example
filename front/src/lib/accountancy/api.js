@@ -21,7 +21,12 @@ export function updateAccount(account) {
 }
 
 // Transactions
-export function getTransactions(accountId) {
+export function getTransactions(accountId, dateFilterTo) {
+    if (dateFilterTo)
+    {
+        return fetchApi(`/accountancy/accounts/${accountId}/transactions?dateFilterTo=${dateFilterTo.getTime()}`);
+    }
+    // Get all
     return fetchApi(`/accountancy/accounts/${accountId}/transactions`);
 }
 

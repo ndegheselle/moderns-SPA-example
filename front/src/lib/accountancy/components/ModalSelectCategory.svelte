@@ -19,7 +19,6 @@
     }
 
     let selectedCategory = null;
-    let categoriesWithNone = [];
     let show = false;
 
     export const modal = {
@@ -37,7 +36,7 @@
     <div class="modal-background" />
     <div class="modal-content">
         <div class="box p-0">
-            <List list={categoriesWithNone} bind:selected={selectedCategory}>
+            <List list={$categories} bind:selected={selectedCategory}>
                 <div slot="row" let:row>
                     <Category category={row}/>
                 </div>

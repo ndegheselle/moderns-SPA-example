@@ -50,10 +50,9 @@ export default {
                     break;
                 }
 
-                if (transactionsList[i].date.getTime() == lastTransaction.date.getTime())
-                {
+                if (transactionsList[i].date.getTime() == lastTransaction.date.getTime()) {
                     // Keep same day as last index so that we can resolve specific cases
-                    if (!indexSameDayLastTransaction) indexSameDayLastTransaction = i+1;
+                    if (!indexSameDayLastTransaction) indexSameDayLastTransaction = i + 1;
 
                     transactionsList[i].orderNumber += lastTransaction.orderNumber;
                 }
@@ -65,14 +64,18 @@ export default {
                 }
             }
         }
-        
+
         return await prisma.transaction.createMany({
             data: transactionsList
         });
     },
-    getByAccountId: async function (accountId) {
+    getByAccountId: async function (accountId, dateFilterTo) {
+        console.log("date", dateFilterTo);
         return await prisma.transaction.findMany({
-            where: { accountId: accountId },
+            where: { 
+                accountId: accountId,
+                date: (dateFilterTo) ? { gte: dateFilterTo } : undefined
+            },
             orderBy: [
                 { date: 'desc' },
                 { orderNumber: 'desc' }

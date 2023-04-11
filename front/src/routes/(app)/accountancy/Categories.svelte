@@ -7,7 +7,7 @@
     import List from "@components/List.svelte";
     import FormModal from "@components/FormModal.svelte";
 
-    import { categories, transactions } from "@lib/accountancy/store";
+    import { categories, selectedCategory, transactions } from "@lib/accountancy/store";
     import {
         getCategories,
         deleteCategory,
@@ -17,7 +17,6 @@
     import Category from "@lib/accountancy/components/Category.svelte";
     import Money from "@lib/accountancy/components/Money.svelte";
 
-    let selectedRow = null;
     let modal = null;
     let categoriesTotal = {};
 
@@ -30,22 +29,21 @@
             if (!total[transaction.categoryId]) total[transaction.categoryId] = 0;
             total[transaction.categoryId] += transaction.value;
         }
-        console.log("reduced", total);
         return total;
     }
 
     function confirmDelete() {
         confirm
             .show(
-                `Do you really want to delete the categorty "${selectedRow.name}" ?`,
+                `Do you really want to delete the categorty "${$selectedCategory.name}" ?`,
                 "Confirm deletion",
                 "is-danger"
             )
             .then((result) => {
                 if (result) {
-                    return deleteCategory(selectedRow.id).then(() => {
+                    return deleteCategory($selectedCategory.id).then(() => {
                         $categories = $categories.filter(
-                            (c) => c.id != selectedRow.id
+                            (c) => c.id != $selectedCategory.id
                         );
                     });
                 }
@@ -89,7 +87,7 @@
             style: "has-text-danger",
         },
     ]}
-    bind:selected={selectedRow}
+    bind:selected={$selectedCategory}
     options={{
         canUnselect: true
     }}
