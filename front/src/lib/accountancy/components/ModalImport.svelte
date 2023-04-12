@@ -1,5 +1,10 @@
 <script>
+    import { accounts } from "@lib/accountancy/store.js";
+    import { alerts } from "@global/dialogs.js";
     import { importFile } from "@lib/accountancy/api.js";
+    import { createEventDispatcher } from 'svelte';
+
+    const dispatch = createEventDispatcher();
 
     let files;
     let bank = "labanquepostale";
@@ -8,15 +13,38 @@
         return files && files.length === 1;
     }
 
-    function sendImport()
+    async function sendImport()
     {
-        importFile(files[0], {accountId: accountId, bank: bank});
+        let result = await importFile(files[0], {accountId: accountId, bank: bank});
+        dispatch('transactionsImported', result.count);
+
+        if (result.count) {
+            alerts.success(`${result.count} new transactions imported.`);
+            accounts.update((_accounts) => {
+                _accounts.find(a => a.id == accountId).balance = result.balance;
+                return _accounts;
+            });
+        }
+        else
+            alerts.success(`No new transaction imported.`);
+        
+        handleClosing();
+    }
+
+    function handleClosing()
+    {
+        accountId = null;
     }
 
     export let accountId = null;
+    export const modal = {
+        show(_accountId = null) {
+            accountId = _accountId;
+        }
+    };
 </script>
 
-<div class="modal" id="ModalImport">
+<div class="modal" class:is-active={!!accountId} on:closing={handleClosing}>
     <div class="modal-background" />
     <div class="modal-card">
         <header class="modal-card-head">

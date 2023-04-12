@@ -10,15 +10,24 @@ export default defineConfig({
     resolve: {
         alias: {
             // these are the aliases and paths to them
-            '@components': path.resolve('./src/lib/components'),
+            '@styles': path.resolve('./src/scss'),
             '@lib': path.resolve('./src/lib'),
-            '@global': path.resolve('./src/lib/global'),
+            '@global': path.resolve('./src/lib/_global'),
+            '@components': path.resolve('./src/lib/_components'),
         }
     },
     server: {
         host: "0.0.0.0",
+        port: 80,
         watch: {
             usePolling: true
+        }
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@use "@styles/colors.scss" as *;`
+            }
         }
     }
 });

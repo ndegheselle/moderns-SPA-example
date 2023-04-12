@@ -1,67 +1,170 @@
 <script>
-    import { getTransactions } from "@lib/accountancy/api.js";
+    import {
+        transactions,
+        categories,
+        selectedCategory,
+        selectedAccount,
+    } from "@lib/accountancy/store";
+    import { getTransactions, updateTransactions } from "@lib/accountancy/api";
     import Money from "@lib/accountancy/components/Money.svelte";
+    import ModalImport from "@lib/accountancy/components/ModalImport.svelte";
+    import ModalSelectCategory from "@lib/accountancy/components/ModalSelectCategory.svelte";
+    import Category from "@lib/accountancy/components/Category.svelte";
 
-    let transactions = [];
+    import List from "@components/List.svelte";
 
-    $: if (selectedAccount && selectedAccount.id) {
-        getTransactions(selectedAccount.id).then((transac) => {
-            transactions = transac;
-        });
+    let modalImport = null;
+    let modalCategory = null;
+    let selectedTransactions = [];
+    let categoriesDico = {};
+    let filter = "1";
+
+    let categoryFilteredTransactions = [];
+    
+    $: handleSelectedCategoryChange($transactions, $selectedCategory);
+    $: handleCategoriesChange($categories);
+    $: handeSelectedAccountChange($selectedAccount);
+
+    function importTransactions() {
+        modalImport.show($selectedAccount.id);
+    }
+    function setTransactionsType() {
+        modalCategory.show();
     }
 
-    export let selectedAccount;
+    function onCategorySelected(event) {
+        if (!event.detail) return;
+
+        transactions.update((_transactions) => {
+            for (let transac of selectedTransactions) {
+                transac.categoryId = event.detail.id;
+            }
+            return _transactions;
+        });
+        updateTransactions($selectedAccount.id, selectedTransactions);
+    }
+
+    function handleSelectedCategoryChange(_transactions, _selectedCategory)
+    {
+        if (!_selectedCategory) {
+            categoryFilteredTransactions = _transactions;
+            return;
+        }
+
+        categoryFilteredTransactions = _transactions.filter(t => t.categoryId == _selectedCategory.id);
+    }
+
+    function handleCategoriesChange(_categories) {
+        categoriesDico = Object.fromEntries(_categories.map((c) => [c.id, c]));
+    }
+
+    async function handeSelectedAccountChange(account) {
+        if (!account) return;
+        await getTransactionWithFilter();
+    }
+
+    async function handleTransactionsChanged(count) {
+        if (!count) return;
+        await getTransactionWithFilter();
+    }
+
+    // Name is a lie, the filter is only the date and not the category
+    async function getTransactionWithFilter()
+    {
+        let dateFilterTo = null;
+        let currentDate = new Date();
+        switch (filter) {
+            case "1":
+                dateFilterTo = new Date(currentDate.setMonth(currentDate.getMonth() - 1));
+                break;
+            case "2":
+                dateFilterTo = new Date(currentDate.setMonth(currentDate.getMonth() - 2));
+                break;
+            case "6":
+                dateFilterTo = new Date(currentDate.setMonth(currentDate.getMonth() - 6));
+                break;
+            case "12":
+                dateFilterTo = new Date(currentDate.setMonth(currentDate.getMonth() - 12));
+                break;
+            case "currentMonth":
+                dateFilterTo = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                break;
+            case "currentYear":
+                dateFilterTo = new Date(currentDate.getFullYear(), 0, 1);
+                break;
+        }
+        $transactions = await getTransactions($selectedAccount.id, dateFilterTo);
+    }
 </script>
 
-{#if !selectedAccount}
-    <section class="hero has-text-centered">
-        <div class="hero-body">
-            <p class="title">The account transactions here</p>
-            <p class="subtitle">Start by creating an account.</p>
-        </div>
-    </section>
-{:else}
-    <div class="accountancy-layout ">
-        <div class="transaction-list panel">
-            <p class="panel-heading">Transactions</p>
-
-            {#each transactions as transaction}
-                <div class="panel-block columns is-gapless">
-                    <div class="column">
-                        <span
-                            >{new Date(
-                                transaction.date
-                            ).toLocaleDateString()}</span
-                        >
-                        <span class="has-text-grey-light"
-                            >{transaction.description}</span
-                        >
-                    </div>
-                    <div class="column is-narrow has-text-right">
-                        <Money value={transaction.value} />
-                    </div>
-                </div>
-            {/each}
-        </div>
+<List
+    title="Transactions"
+    list={categoryFilteredTransactions}
+    actionsMenu={[
+        {
+            title: "Import",
+            icon: "gg-software-upload",
+            action: importTransactions,
+        },
+    ]}
+    contextMenu={[
+        {
+            title: "Set category",
+            icon: "gg-tag",
+            action: setTransactionsType,
+        },
+    ]}
+    options={{
+        hasMultiselect: true,
+    }}
+    bind:selected={selectedTransactions}
+>
+    <div slot="filters" class="select">
+        <select
+            bind:value={filter}
+            on:change={getTransactionWithFilter}
+        >
+            <option value="1">1 month</option>
+            <option value="2">2 months</option>
+            <option value="6">6 months</option>
+            <option value="12">1 year</option>
+            <option value="currentMonth">This month</option>
+            <option value="currentYear">This year</option>
+            <option value="0">All</option>
+        </select>
     </div>
-{/if}
 
-<style scoped>
-    .transaction-list .columns {
-        margin: 0;
+    <div
+        slot="row"
+        class="flex-container row"
+        class:is-selected={row.selected}
+        let:row
+    >
+        <Category category={categoriesDico[row.categoryId]} onlyIcon={true} />
+        <span class="has-text-grey description">{row.description}</span>
+        <span class="balance ml-auto has-text-right">
+            <Money value={row.value} />
+            <span class="date has-text-grey-light"
+                >{new Date(row.date).toLocaleDateString()}</span
+            >
+        </span>
+    </div>
+</List>
+
+<ModalImport
+    bind:modal={modalImport}
+    on:transactionsImported={handleTransactionsChanged}
+/>
+<ModalSelectCategory
+    bind:modal={modalCategory}
+    on:selected={onCategorySelected}
+/>
+
+<style lang="scss">
+    .row.is-selected .description {
+        color: $grey-darker !important;
     }
-
-    .accountancy-layout {
-        margin: 0;
-        padding: 0.2rem;
-    }
-
-    .accountancy-layout .column {
-        margin: 0.2rem;
-    }
-
-    .accountancy-layout .column > span {
+    .row .date {
         display: block;
-        line-height: 1.2;
     }
 </style>

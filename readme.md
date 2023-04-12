@@ -12,6 +12,7 @@ Proxy from frontend to backend.
 ## Windows
 
 Tutorial : https://adelachao.medium.com/create-a-mongodb-replica-set-in-windows-edeab1c85894
+Use 
 
 ## Linux
 
@@ -22,8 +23,7 @@ mongosh
 ```
 Use this setup :
 ```js
-config = { "_id": "s0", "members": [ { "_id": 0, "host": "db:27017" }] }
-rs.initiate(config)
+rs.initiate()
 ```
 
 # Docker
@@ -48,16 +48,34 @@ Docker cmd :
 docker-compose exec [nom-container] /bin/bash
 ```
 
-# Todos
+## Silence
+Start with :
+```
+docker-compose up -d && docker-compose logs api -f
+```
 
-## Plugin system
+# Prisma
 
-Make it easy for an external dev to add new plugin (set of routes/models for api and pages/api requests for front) :
-- Fastify : using patterns and regroup in folders (using `dirNameRoutePrefix`, `matchFilter`, ...)
-- SvelteKit : simply put everything in routes ? Or try to understand how embeded projects are made.
-    - Working but not fan : https://github.com/sveltejs/kit/issues/6031
+Push to database : 
+```
+npx prisma db push
+```
 
-## Reverse proxy
+## Interface
 
-Use nginx reverse proxy
-- Redirect API
+Go to the API container :
+```
+docker-compose exec api /bin/sh
+```
+
+Start prisma studio :
+```
+npx prisma studio
+```
+
+## Default user
+
+`test` hashed :
+```
+$2b$10$DCmF8dlyil4vK5CUSzUgeO5Uoip1DRvTFaGeUXHgxElikdGbqguwu
+```

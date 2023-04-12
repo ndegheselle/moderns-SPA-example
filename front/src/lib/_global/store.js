@@ -14,3 +14,10 @@ export const confirmModal = writable({
     type: "",
     callback: Function,
 });
+
+export const contextMenu = writable({
+    visible: false,
+    position: {x: 0, y: 0},
+    items: [],
+    context: null,
+});

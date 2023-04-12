@@ -9,12 +9,13 @@
 
 </script>
 
-<div class="modal" class:is-active={$confirmModal.show} on:closing={() => handleClosing(false)}>
+{#if $confirmModal.show}
+<div class="modal is-active" on:closing={() => handleClosing(false)}>
     <div class="modal-background"/>
     <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">{$confirmModal.title}</p>
-            <button class="delete"  />
+            <button class="delete" aria-label="close"/>
         </header>
         <section class="modal-card-body">
             <p>{$confirmModal.message}</p>
@@ -26,3 +27,4 @@
         </footer>
     </div>
 </div>
+{/if}
