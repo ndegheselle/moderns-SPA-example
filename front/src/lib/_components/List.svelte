@@ -32,8 +32,6 @@
 
     export let selected = null;
     export let list = [];
-    export let title = "";
-    export let actionsMenu = [];
     export let contextMenu = null;
     // Options should have false by default otherwise it will not work (since you overide the object)
     export let options = {
@@ -42,62 +40,24 @@
     };
 </script>
 
-<div class="panel m-0 is-fullheight">
-    <div class="actions-container">
-        <slot name="filters"/>
-        {#if actionsMenu && actionsMenu.length}
-            <div class="dropdown is-right">
-                <div class="dropdown-trigger">
-                    <button class="button is-ghost" aria-haspopup="true">
-                        <i class="gg-more-vertical-alt" />
-                    </button>
-                </div>
-                <div class="dropdown-menu" role="menu">
-                    {#each actionsMenu as menu}
-                        <div class="dropdown-content">
-                            <a class="dropdown-item" on:click={menu.action}>
-                                <span class="icon-text">
-                                    <span class="icon"
-                                        ><i class={menu.icon} /></span
-                                    >
-                                    {menu.title}
-                                </span>
-                            </a>
-                        </div>
-                    {/each}
-                </div>
-            </div>
-        {/if}
-    </div>
-
-    {#if title}
-        <div class="panel-heading">{title}</div>
-    {/if}
-
-    {#if !list || !list.length}
-        <div class="empty-list has-text-grey-light">No elements</div>
-    {:else}
-        {#each list as row, index}
-            <a
-                class:is-active={row.selected}
-                class:has-background-link-light={row.selected}
-                class:has-text-grey={!row.id}
-                class="panel-block row"
-                on:contextmenu={(event) => showContextMenu(event, index)}
-                on:click={() => selectRow(index)}
-            >
-                <slot name="row" {row} />
-            </a>
-        {/each}
-    {/if}
-</div>
+{#if !list || !list.length}
+<div class="empty-list has-text-grey-light">No elements</div>
+{:else}
+{#each list as row, index}
+    <a
+        class:is-active={row.selected}
+        class:has-background-link-light={row.selected}
+        class:has-text-grey={!row.id}
+        class="panel-block row"
+        on:contextmenu={(event) => showContextMenu(event, index)}
+        on:click={() => selectRow(index)}
+    >
+        <slot name="row" {row} />
+    </a>
+{/each}
+{/if}
 
 <style>
-    .actions-container {
-        float: right;
-        margin: 0.45rem;
-    }
-
     .empty-list {
         height: 70%;
         display: flex;

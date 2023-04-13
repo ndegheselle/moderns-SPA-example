@@ -5,6 +5,7 @@
     import { confirm } from "@global/dialogs.js";
     import FormModal from "@components/FormModal.svelte";
     import List from "@components/List.svelte";
+    import Panel from "@components/Panel.svelte";
 
     import {
         getAccounts,
@@ -60,9 +61,8 @@
     });
 </script>
 
-<List
+<Panel
     title="Accounts"
-    list={$accounts}
     actionsMenu={[
         {
             title: "Add new",
@@ -70,49 +70,54 @@
             action: () => modal.show({}),
         },
     ]}
-    contextMenu={[
-        {
-            title: "Edit account",
-            action: (account) => modal.show(account),
-            icon: "gg-pen",
-        },
-        {
-            title: "Delete account",
-            action: confirmDelete,
-            icon: "gg-trash",
-            style: "has-text-danger",
-        },
-    ]}
-    bind:selected={selectedRow}
 >
-    <div
-        slot="row"
-        class="flex-container row"
-        class:is-selected={row.selected}
-        let:row
+    <List
+        title="Accounts"
+        list={$accounts}
+        contextMenu={[
+            {
+                title: "Edit account",
+                action: (account) => modal.show(account),
+                icon: "gg-pen",
+            },
+            {
+                title: "Delete account",
+                action: confirmDelete,
+                icon: "gg-trash",
+                style: "has-text-danger",
+            },
+        ]}
+        bind:selected={selectedRow}
     >
-        <div>
-            <b class="name">{row.name}</b>
-            <span class="description has-text-grey">{row.description}</span>
+        <div
+            slot="row"
+            class="flex-container row"
+            class:is-selected={row.selected}
+            let:row
+        >
+            <div>
+                <b class="name">{row.name}</b>
+                <span class="description has-text-grey">{row.description}</span>
+            </div>
+            <span class="balance ml-auto">
+                <Money value={row.balance} />
+            </span>
         </div>
-        <span class="balance ml-auto">
-            <Money value={row.balance} />
-        </span>
-    </div>
-</List>
+    </List>
+</Panel>
 
 <!-- Create / edit form -->
-<FormModal
-    title="account"
-    bind:modal
-    on:finished={sendAccount}
->
+<FormModal title="account" bind:modal on:finished={sendAccount}>
     <div slot="form">
         <div class="field">
             <label class="label">
                 Name
                 <div class="control">
-                    <input class="input" type="text" bind:value={modal.data.name} />
+                    <input
+                        class="input"
+                        type="text"
+                        bind:value={modal.data.name}
+                    />
                 </div>
             </label>
         </div>
@@ -120,7 +125,11 @@
             <label class="label">
                 Description
                 <div class="control">
-                    <input class="input" type="text" bind:value={modal.data.description} />
+                    <input
+                        class="input"
+                        type="text"
+                        bind:value={modal.data.description}
+                    />
                 </div>
             </label>
         </div>
