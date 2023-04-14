@@ -1,6 +1,7 @@
 <script>
   import "../scss/app.scss";
   import "css.gg/icons/all.scss";
+  import "chartist/dist/index.scss";
 
   import Alerts from "./Alerts.svelte";
   import ConfirmModal from "./ConfirmModal.svelte";

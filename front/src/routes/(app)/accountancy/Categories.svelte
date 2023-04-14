@@ -21,9 +21,11 @@
     } from "@lib/accountancy/api";
     import Category from "@lib/accountancy/components/Category.svelte";
     import Money from "@lib/accountancy/components/Money.svelte";
+    import Graph from "@lib/accountancy/components/Graph.svelte";
 
     let modal = null;
     let categoriesTotal = {};
+    let selectedPanel = "list";
 
     $: categoriesTotal = getCategoriesTotal($transactions);
 
@@ -80,9 +82,16 @@
     ]}
 >
     <p class="panel-tabs">
-        <a class="is-active">List</a>
-        <a>Graph</a>
+        <a
+            class:is-active={selectedPanel == "list"}
+            on:click={() => (selectedPanel = "list")}>List</a
+        >
+        <a class:is-active={selectedPanel == "graph"}
+        on:click={() => (selectedPanel = "graph")}>Graph</a>
     </p>
+
+    {#if selectedPanel ==  "list"}
+
     <List
         list={$categories}
         contextMenu={[
@@ -112,6 +121,9 @@
             {/if}
         </div>
     </List>
+    {:else if selectedPanel == "graph"}
+    <Graph totals={categoriesTotal} categories={$categories}/>
+    {/if}
 </Panel>
 
 <!-- Create / edit form -->
