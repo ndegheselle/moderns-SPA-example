@@ -6,10 +6,9 @@
         selectedAccount,
     } from "@lib/accountancy/store";
     import { getTransactions, updateTransactions } from "@lib/accountancy/api";
-    import Money from "@lib/accountancy/components/Money.svelte";
     import ModalImport from "@lib/accountancy/components/ModalImport.svelte";
     import ModalSelectCategory from "@lib/accountancy/components/ModalSelectCategory.svelte";
-    import Category from "@lib/accountancy/components/Category.svelte";
+    import Transaction from "@lib/accountancy/components/Transaction.svelte";
 
     import Panel from "@components/Panel.svelte";
     import List from "@components/List.svelte";
@@ -148,24 +147,7 @@
         }}
         bind:selected={selectedTransactions}
     >
-        <div
-            slot="row"
-            class="flex-container row"
-            class:is-selected={row.selected}
-            let:row
-        >
-            <Category
-                category={categoriesDico[row.categoryId]}
-                onlyIcon={true}
-            />
-            <span class="has-text-grey description">{row.description}</span>
-            <span class="balance ml-auto has-text-right">
-                <Money value={row.value} />
-                <span class="date has-text-grey-light"
-                    >{new Date(row.date).toLocaleDateString()}</span
-                >
-            </span>
-        </div>
+        <Transaction slot="row" let:row  {categoriesDico} transaction={row} />
     </List>
 </Panel>
 
@@ -177,12 +159,3 @@
     bind:modal={modalCategory}
     on:selected={onCategorySelected}
 />
-
-<style lang="scss">
-    .row.is-selected .description {
-        color: $grey-darker !important;
-    }
-    .row .date {
-        display: block;
-    }
-</style>
