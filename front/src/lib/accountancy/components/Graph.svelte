@@ -17,7 +17,6 @@
     {
         const values = categories.map(c => totals[c.id]);
         const total = values.reduce((acc, val) => acc + Math.abs(val));
-        console.log(values, total)
         return {
             series: values.map(v => Math.abs(v) * 100 / total),
             labels: categories.map(c => c.name)
