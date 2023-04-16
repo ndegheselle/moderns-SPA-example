@@ -6,8 +6,13 @@
 
     import List from "@components/List.svelte";
     import FormModal from "@components/FormModal.svelte";
+    import Panel from "@components/Panel.svelte";
 
-    import { categories, selectedCategory, transactions } from "@lib/accountancy/store";
+    import {
+        categories,
+        selectedCategory,
+        transactions,
+    } from "@lib/accountancy/store";
     import {
         getCategories,
         deleteCategory,
@@ -16,17 +21,19 @@
     } from "@lib/accountancy/api";
     import Category from "@lib/accountancy/components/Category.svelte";
     import Money from "@lib/accountancy/components/Money.svelte";
+    import Graph from "@lib/accountancy/components/Graph.svelte";
 
     let modal = null;
     let categoriesTotal = {};
+    let selectedPanel = "list";
 
     $: categoriesTotal = getCategoriesTotal($transactions);
 
     function getCategoriesTotal(_transactions) {
         const total = {};
-        for (let transaction of _transactions)
-        {
-            if (!total[transaction.categoryId]) total[transaction.categoryId] = 0;
+        for (let transaction of _transactions) {
+            if (!total[transaction.categoryId])
+                total[transaction.categoryId] = 0;
             total[transaction.categoryId] += transaction.value;
         }
         return total;
@@ -64,9 +71,8 @@
     });
 </script>
 
-<List
+<Panel
     title="Categories"
-    list={$categories}
     actionsMenu={[
         {
             title: "Add new",
@@ -74,33 +80,51 @@
             action: (account) => modal.show({}),
         },
     ]}
-    contextMenu={[
-        {
-            title: "Edit category",
-            action: (account) => modal.show(account),
-            icon: "gg-pen",
-        },
-        {
-            title: "Delete category",
-            action: confirmDelete,
-            icon: "gg-trash",
-            style: "has-text-danger",
-        },
-    ]}
-    bind:selected={$selectedCategory}
-    options={{
-        canUnselect: true
-    }}
 >
-    <div slot="row" class="flex-container" let:row>
-        <Category category={row} />
-        {#if categoriesTotal[row.id]}
-        <span class="ml-auto">
-            <Money value={categoriesTotal[row.id]}/>
-        </span>
-        {/if}
-    </div>
-</List>
+    <p class="panel-tabs">
+        <a
+            class:is-active={selectedPanel == "list"}
+            on:click={() => (selectedPanel = "list")}>List</a
+        >
+        <a class:is-active={selectedPanel == "graph"}
+        on:click={() => (selectedPanel = "graph")}>Graph</a>
+    </p>
+
+    {#if selectedPanel ==  "list"}
+
+    <List
+        list={$categories}
+        contextMenu={[
+            {
+                title: "Edit category",
+                action: (account) => modal.show(account),
+                icon: "gg-pen",
+            },
+            {
+                title: "Delete category",
+                action: confirmDelete,
+                icon: "gg-trash",
+                style: "has-text-danger",
+            },
+        ]}
+        bind:selected={$selectedCategory}
+        options={{
+            canUnselect: true,
+        }}
+    >
+        <div slot="row" class="flex-container" let:row>
+            <Category category={row} />
+            {#if categoriesTotal[row.id]}
+                <span class="ml-auto">
+                    <Money value={categoriesTotal[row.id]} />
+                </span>
+            {/if}
+        </div>
+    </List>
+    {:else if selectedPanel == "graph"}
+    <Graph totals={categoriesTotal} categories={$categories}/>
+    {/if}
+</Panel>
 
 <!-- Create / edit form -->
 <FormModal title="category" bind:modal on:finished={sendCategory}>

@@ -70,7 +70,6 @@ export default {
         });
     },
     getByAccountId: async function (accountId, dateFilterTo) {
-        console.log("date", dateFilterTo);
         return await prisma.transaction.findMany({
             where: { 
                 accountId: accountId,
